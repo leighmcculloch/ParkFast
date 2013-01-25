@@ -60,7 +60,10 @@
 	
 	[self.request getJsonFromURL:url andCallback:^(NSString *url, NSDictionary *json) {
 		
-		NSArray* result = [[json objectForKey:@"result"] retain];
+		NSArray* result = [json objectForKey:@"result"];
+		if (!result) {
+			return;
+		}
 		
 		// add each carpark to the advMapView
 		for (NSDictionary* carparkDic in result) {
