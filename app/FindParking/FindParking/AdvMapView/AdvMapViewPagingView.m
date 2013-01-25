@@ -1,0 +1,117 @@
+//
+//  FPInfoPagingView.m
+//  FindParking
+//
+//  Created by Leigh McCulloch on 19/01/13.
+//  Copyright (c) 2013 Leigh McCulloch. All rights reserved.
+//
+
+#import "AdvMapViewPagingView.h"
+#import "AdvMapViewInfoView.h"
+#import "AdvMapViewItem.h"
+#import <CoreLocation/CoreLocation.h>
+
+@interface AdvMapViewPagingView()
+
+@property (retain, nonatomic) NSMutableArray* infoViews;
+
+@end
+
+@implementation AdvMapViewPagingView
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+		[self _init];
+    }
+    return self;
+}
+
+- (void)awakeFromNib {
+	[self _init];
+}
+
+- (void)_init {
+	self.infoViews = [NSMutableArray array];
+	self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"info-bar-bg"]];
+}
+
+- (void)addItem:(id<AdvMapViewItem>)item {
+	// build info view
+	AdvMapViewInfoView* infoView = [AdvMapViewInfoView infoViewWithItem:item];
+	
+	// store info view, index doesn't matter as they are ordered by their order property
+	[self.infoViews addObject:infoView];
+	
+	// add as subview
+	[self addSubview:infoView];
+	
+	// update page frames and ui
+	[self updateInfoViews:NO];
+	[self updateContentSize];
+	[self updateSelectedItem];
+}
+
+- (void)removeItem:(id<AdvMapViewItem>)item {
+	for (int i=0; i<self.infoViews.count; i++) {
+		AdvMapViewInfoView* infoView = [self.infoViews objectAtIndex:i];
+		if ([infoView.item isEqual:item]) {
+			// remove from page view
+			[infoView removeFromSuperview];
+			
+			// remove infoview from array
+			[self.infoViews removeObjectAtIndex:i];
+			
+			// update page frames and ui
+			[self updateInfoViews:NO];
+			[self updateContentSize];
+			[self updateSelectedItem];
+			
+			// stop search, we're finished
+			break;
+		}
+	}
+}
+
+- (void)updateAllItems {
+	[self updateInfoViews:YES];
+}
+
+- (void)scrollToItem:(id<AdvMapViewItem>)item animated:(BOOL)animated {
+	[self setContentOffset:CGPointMake(self.frame.size.width*item.order, 0) animated:animated];
+}
+
+- (void)updateInfoViews:(BOOL)updateLabels {
+	for (int i=0; i<self.infoViews.count; i++) {
+		AdvMapViewInfoView* infoView = [self.infoViews objectAtIndex:i];
+		
+		CGRect frame;
+		frame.origin.x = self.frame.size.width * infoView.item.order;
+		frame.origin.y = 0;
+		frame.size = self.frame.size;
+		
+		infoView.frame = frame;
+		
+		if (updateLabels) {
+			[infoView updateLabels];
+		}
+	}
+}
+
+- (void)updateContentSize {
+	self.contentSize = CGSizeMake(self.frame.size.width*self.infoViews.count, self.frame.size.height);
+}
+
+- (void)updateSelectedItem {
+	if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)]) {
+		[self.delegate scrollViewDidEndDecelerating:self];
+	}
+}
+
+- (NSUInteger)selectedIndex {
+    float fractionalPage = self.contentOffset.x / self.frame.size.width;
+    NSUInteger page = lround(fractionalPage);
+	return page;
+}
+
+@end
