@@ -10,11 +10,18 @@
 #import "AdvMapViewAnnotation.h"
 #import "AdvMapViewFocusAnnotation.h"
 
+typedef enum {
+	AdvMapViewUserLocationStateOff = 0,
+	AdvMapViewUserLocationStateOn = 1,
+	AdvMapViewUserLocationStateTracking = 2,
+} AdvMapViewUserLocationState;
+
 @interface AdvMapView()
 
 @property (retain, nonatomic) IBOutlet MKMapView *mapView;
 @property (retain, nonatomic) IBOutlet AdvMapViewPagingView *pagingView;
 @property (retain, nonatomic) IBOutlet UIButton *userLocationToggleButton;
+@property (assign, nonatomic) AdvMapViewUserLocationState userLocationState;
 @property (retain, nonatomic) NSMutableArray *items;
 @property (retain, nonatomic) AdvMapViewFocusAnnotation *focusAnnotation;
 
@@ -42,6 +49,7 @@
 }
 
 - (void)_init {
+	self.userLocationState = AdvMapViewUserLocationStateOn;
 	self.items = [NSMutableArray array];
 	[self setupMapViewGestures];
 }
@@ -131,7 +139,9 @@
 	[self updateAllItemsDistance];
 	[self.items sortUsingSelector:@selector(comparePriority:)];
 	[self updateItemsOrder:0];
-	[self zoomToSelected];
+	if (self.userLocationState != AdvMapViewUserLocationStateTracking) {
+		[self zoomToSelected];
+	}
 }
 
 - (CLLocationCoordinate2D)centerCoordinate {
@@ -143,6 +153,32 @@
 	MKMapPoint minPoint = MKMapPointMake(MKMapRectGetMinX(visibleRect), MKMapRectGetMinY(visibleRect));
 	MKMapPoint maxPoint = MKMapPointMake(MKMapRectGetMaxX(visibleRect), MKMapRectGetMaxY(visibleRect));
 	return MKMetersBetweenMapPoints(minPoint, maxPoint);
+}
+
+- (void)setUserLocationState:(AdvMapViewUserLocationState)userLocationState {
+	
+	// dont't do anything if the values are the same
+	if (_userLocationState == userLocationState) {
+		return;
+	}
+	
+	_userLocationState = userLocationState;
+	switch (userLocationState) {
+		case AdvMapViewUserLocationStateOff:
+			[self.userLocationToggleButton setImage:[UIImage imageNamed:@"location-arrow-off"] forState:UIControlStateNormal];
+			break;
+		case AdvMapViewUserLocationStateOn:
+			[self.userLocationToggleButton setImage:[UIImage imageNamed:@"location-arrow-on"] forState:UIControlStateNormal];
+			break;
+		case AdvMapViewUserLocationStateTracking:
+			[self.userLocationToggleButton setImage:[UIImage imageNamed:@"location-arrow-tracking"] forState:UIControlStateNormal];
+			[self.mapView setUserTrackingMode:MKUserTrackingModeFollowWithHeading animated:YES];
+			break;
+	}
+	
+	if (userLocationState >= AdvMapViewUserLocationStateOn) {
+		self.focusCoordinate = self.mapView.userLocation.coordinate;
+	}
 }
 
 #pragma mark Internal: Functions
@@ -197,22 +233,23 @@
 
 - (IBAction)userLocationToggle:(id)sender {
 	[self endEditing:YES];
-	[self.userLocationToggleButton setSelected:!self.userLocationToggleButton.selected];
 	
-	if (self.userLocationToggleButton.selected) {
-		self.focusCoordinate = self.mapView.userLocation.coordinate;
+	AdvMapViewUserLocationState state = self.userLocationState + 1;
+	if (state > AdvMapViewUserLocationStateTracking) {
+		state = AdvMapViewUserLocationStateOff;
 	}
+	self.userLocationState = state;
 }
 
 #pragma mark Internal: Map Kit Delegate
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-	if (self.userLocationToggleButton.selected) {
+	if (self.userLocationState == AdvMapViewUserLocationStateOn || self.userLocationState == AdvMapViewUserLocationStateTracking) {
 		self.focusCoordinate = userLocation.coordinate;
 	}
 }
 
 - (void)mapView:(MKMapView *)mapView didFailToLocateUserWithError:(NSError *)error {
-	self.userLocationToggleButton.selected = false;
+	self.userLocationState = AdvMapViewUserLocationStateOff;
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id < MKAnnotation >)annotation {
@@ -286,7 +323,7 @@
 	
 	[self endEditing:YES];
 	if (searchBar.text.length > 0) {
-		self.userLocationToggleButton.selected = NO;
+		self.userLocationState = AdvMapViewUserLocationStateOff;
 		
 		CLGeocoder *geocoder = [[[CLGeocoder alloc] init] autorelease];
 		[geocoder geocodeAddressString:searchBar.text completionHandler:^(NSArray *placemarks, NSError *error) {
@@ -361,7 +398,7 @@
 
 - (void)mapViewManuallyMoved:(UIGestureRecognizer*)gestureRecognizer {
 	if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-		[self.userLocationToggleButton setSelected:NO];
+		self.userLocationState = AdvMapViewUserLocationStateOff;
 	}
 }
 

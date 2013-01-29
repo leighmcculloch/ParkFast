@@ -30,6 +30,8 @@
 		20099DB016B21A0A008F6C28 /* pin-parking@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DA616B21A0A008F6C28 /* pin-parking@2x.png */; };
 		20099DB216B22164008F6C28 /* AdvMapViewInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20099DB116B22164008F6C28 /* AdvMapViewInfoView.xib */; };
 		20099DBE16B266FB008F6C28 /* AdvMapViewFocusAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20099DBD16B266FB008F6C28 /* AdvMapViewFocusAnnotation.m */; };
+		20099DC116B27AFB008F6C28 /* location-arrow-tracking.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */; };
+		20099DC216B27AFB008F6C28 /* location-arrow-tracking@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */; };
 		20E5106F16B140F3009E19E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5106E16B140F3009E19E7 /* UIKit.framework */; };
 		20E5107116B140F3009E19E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5107016B140F3009E19E7 /* Foundation.framework */; };
 		20E5107316B140F3009E19E7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5107216B140F3009E19E7 /* CoreGraphics.framework */; };
@@ -77,6 +79,8 @@
 		20099DB116B22164008F6C28 /* AdvMapViewInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvMapViewInfoView.xib; sourceTree = "<group>"; };
 		20099DBC16B266FA008F6C28 /* AdvMapViewFocusAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvMapViewFocusAnnotation.h; sourceTree = "<group>"; };
 		20099DBD16B266FB008F6C28 /* AdvMapViewFocusAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvMapViewFocusAnnotation.m; sourceTree = "<group>"; };
+		20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow-tracking.png"; sourceTree = "<group>"; };
+		20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow-tracking@2x.png"; sourceTree = "<group>"; };
 		20E5106A16B140F3009E19E7 /* FindParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E5106E16B140F3009E19E7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		20E5107016B140F3009E19E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -155,6 +159,8 @@
 				20099DA216B21A0A008F6C28 /* location-arrow-off@2x.png */,
 				20099DA316B21A0A008F6C28 /* location-arrow-on.png */,
 				20099DA416B21A0A008F6C28 /* location-arrow-on@2x.png */,
+				20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */,
+				20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */,
 				20099DA516B21A0A008F6C28 /* pin-parking.png */,
 				20099DA616B21A0A008F6C28 /* pin-parking@2x.png */,
 			);
@@ -291,6 +297,8 @@
 				20099DAF16B21A0A008F6C28 /* pin-parking.png in Resources */,
 				20099DB016B21A0A008F6C28 /* pin-parking@2x.png in Resources */,
 				20099DB216B22164008F6C28 /* AdvMapViewInfoView.xib in Resources */,
+				20099DC116B27AFB008F6C28 /* location-arrow-tracking.png in Resources */,
+				20099DC216B27AFB008F6C28 /* location-arrow-tracking@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

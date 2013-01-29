@@ -103,7 +103,7 @@
 }
 
 - (void)updateSelectedItem {
-	if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)]) {
+	if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) {
 		[self.delegate scrollViewDidEndDecelerating:self];
 	}
 }
