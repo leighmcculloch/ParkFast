@@ -16,6 +16,9 @@ typedef enum {
 	AdvMapViewUserLocationStateTracking = 2,
 } AdvMapViewUserLocationState;
 
+#define CONVERT_FROM_MKUSERTRACKINGMODE(mode) ((AdvMapViewUserLocationState)mode)
+#define CONVERT_TO_MKUSERTRACKINGMODE(state) ((MKUserTrackingMode)state)
+
 @interface AdvMapView()
 
 @property (retain, nonatomic) IBOutlet MKMapView *mapView;
@@ -166,9 +169,11 @@ typedef enum {
 	switch (userLocationState) {
 		case AdvMapViewUserLocationStateOff:
 			[self.userLocationToggleButton setImage:[UIImage imageNamed:@"location-arrow-off"] forState:UIControlStateNormal];
+			[self.mapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
 			break;
 		case AdvMapViewUserLocationStateOn:
 			[self.userLocationToggleButton setImage:[UIImage imageNamed:@"location-arrow-on"] forState:UIControlStateNormal];
+			[self.mapView setUserTrackingMode:MKUserTrackingModeNone animated:YES];
 			break;
 		case AdvMapViewUserLocationStateTracking:
 			[self.userLocationToggleButton setImage:[UIImage imageNamed:@"location-arrow-tracking"] forState:UIControlStateNormal];
@@ -245,6 +250,13 @@ typedef enum {
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
 	if (self.userLocationState == AdvMapViewUserLocationStateOn || self.userLocationState == AdvMapViewUserLocationStateTracking) {
 		self.focusCoordinate = userLocation.coordinate;
+	}
+}
+
+- (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated {
+	AdvMapViewUserLocationState state = CONVERT_FROM_MKUSERTRACKINGMODE(mode);
+	if (self.userLocationState != state) {
+		self.userLocationState = state;
 	}
 }
 
