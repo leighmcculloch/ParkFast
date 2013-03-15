@@ -122,16 +122,20 @@ typedef enum {
 	}
 }
 
-- (void)removeAllItemsFarAwayFromFocusPoint {
-	for (int i = self.items.count; i >= 0; i--) {
+- (void)removeItemsOffScreen {
+	CLLocation* focusLocation = [[CLLocation alloc] initWithLatitude:self.focusCoordinate.latitude longitude:self.focusCoordinate.longitude];
+	CLLocation* centerLocation = [[CLLocation alloc] initWithLatitude:self.centerCoordinate.latitude longitude:self.centerCoordinate.longitude];
+	CLLocationDistance distance = [centerLocation distanceFromLocation:focusLocation] + self.spanMeters;
+	
+	
+	// remove any items that are further away from the focus than the current view is
+	for (int i = self.items.count - 1; i >= 0; i--) {
 		id<AdvMapViewItem> item = self.items[self.items.count-1];
-		if (item.distance > 4000) {
+		if (item.distance > distance) {
 			[self removeItem:item];
 		}
 	}
-}
 
-- (void)removeItemsOffScreen {
 	/*for (id<MKAnnotation> annotation in self.mapView.annotations) {
 		if ([annotation isKindOfClass:[MKUserLocation class]]) {
 			continue;
@@ -203,10 +207,6 @@ typedef enum {
 	
 	if (userLocationState >= AdvMapViewUserLocationStateOn) {
 		self.focusCoordinate = self.mapView.userLocation.coordinate;
-	}
-	
-	if (userLocationState == AdvMapViewUserLocationStateOn) {
-		[self removeAllItemsFarAwayFromFocusPoint];
 	}
 }
 
