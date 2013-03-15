@@ -17,6 +17,7 @@
 - (void)addItem:(id<AdvMapViewItem>)item;
 - (void)removeItem:(id<AdvMapViewItem>)item;
 - (void)updateAllItems;
+- (void)scrollToIndex:(NSUInteger)index animated:(BOOL)animated;
 - (void)scrollToItem:(id<AdvMapViewItem>)item animated:(BOOL)animated;
 
 @end

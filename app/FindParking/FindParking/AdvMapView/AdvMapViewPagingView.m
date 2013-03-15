@@ -77,8 +77,12 @@
 	[self updateInfoViews:YES];
 }
 
+- (void)scrollToIndex:(NSUInteger)index animated:(BOOL)animated {
+	[self setContentOffset:CGPointMake(self.frame.size.width*index, 0) animated:animated];
+}
+
 - (void)scrollToItem:(id<AdvMapViewItem>)item animated:(BOOL)animated {
-	[self setContentOffset:CGPointMake(self.frame.size.width*item.order, 0) animated:animated];
+	[self scrollToIndex:item.order animated:animated];
 }
 
 - (void)updateInfoViews:(BOOL)updateLabels {

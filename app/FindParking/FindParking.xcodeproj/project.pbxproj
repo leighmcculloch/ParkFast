@@ -34,6 +34,7 @@
 		20099DC116B27AFB008F6C28 /* location-arrow-tracking.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */; };
 		20099DC216B27AFB008F6C28 /* location-arrow-tracking@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */; };
 		201B696116F2977800A5A404 /* findparking.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 201B696016F2977800A5A404 /* findparking.sqlite3 */; };
+		207E755016F30A9C0003E316 /* sqlite3_latlondistkm.c in Sources */ = {isa = PBXBuildFile; fileRef = 207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */; };
 		20E5106F16B140F3009E19E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5106E16B140F3009E19E7 /* UIKit.framework */; };
 		20E5107116B140F3009E19E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5107016B140F3009E19E7 /* Foundation.framework */; };
 		20E5107316B140F3009E19E7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5107216B140F3009E19E7 /* CoreGraphics.framework */; };
@@ -85,6 +86,8 @@
 		20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow-tracking.png"; sourceTree = "<group>"; };
 		20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow-tracking@2x.png"; sourceTree = "<group>"; };
 		201B696016F2977800A5A404 /* findparking.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = findparking.sqlite3; sourceTree = "<group>"; };
+		207E754D16F30A8E0003E316 /* sqlite3_latlondistkm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite3_latlondistkm.h; sourceTree = "<group>"; };
+		207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3_latlondistkm.c; sourceTree = "<group>"; };
 		20E5106A16B140F3009E19E7 /* FindParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E5106E16B140F3009E19E7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		20E5107016B140F3009E19E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -149,6 +152,8 @@
 				20099D8C16B1EF12008F6C28 /* UIImage+imageWithColor.m */,
 				20099D9616B20DF6008F6C28 /* HttpRequest.h */,
 				20099D9716B20DF6008F6C28 /* HttpRequest.m */,
+				207E754D16F30A8E0003E316 /* sqlite3_latlondistkm.h */,
+				207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -337,6 +342,7 @@
 				20099D9816B20DF6008F6C28 /* HttpRequest.m in Sources */,
 				20099D9B16B20F9F008F6C28 /* FPCarPark.m in Sources */,
 				20099DBE16B266FB008F6C28 /* AdvMapViewFocusAnnotation.m in Sources */,
+				207E755016F30A9C0003E316 /* sqlite3_latlondistkm.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

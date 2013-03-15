@@ -26,6 +26,7 @@
 @property (retain, nonatomic) UIImage* imagePin;
 @property (readonly, nonatomic) CLLocationCoordinate2D centerCoordinate;
 @property (readonly, nonatomic) CGFloat spanMeters;
+@property (readonly, nonatomic) CGFloat accuracy;
 
 + (AdvMapView*)viewFromNib;
 - (void)addItem:(id<AdvMapViewItem>)item;

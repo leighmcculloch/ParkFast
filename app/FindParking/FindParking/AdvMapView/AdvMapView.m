@@ -116,6 +116,21 @@ typedef enum {
 	[self.pagingView removeItem:item];
 }
 
+- (void)removeAllItems {
+	while(self.items.count > 0) {
+		[self removeItem:self.items[self.items.count-1]];
+	}
+}
+
+- (void)removeAllItemsFarAwayFromFocusPoint {
+	for (int i = self.items.count; i >= 0; i--) {
+		id<AdvMapViewItem> item = self.items[self.items.count-1];
+		if (item.distance > 4000) {
+			[self removeItem:item];
+		}
+	}
+}
+
 - (void)removeItemsOffScreen {
 	/*for (id<MKAnnotation> annotation in self.mapView.annotations) {
 		if ([annotation isKindOfClass:[MKUserLocation class]]) {
@@ -142,8 +157,9 @@ typedef enum {
 	[self updateAllItemsDistance];
 	[self.items sortUsingSelector:@selector(comparePriority:)];
 	[self updateItemsOrder:0];
+	[self.pagingView updateAllItems];
 	if (self.userLocationState != AdvMapViewUserLocationStateTracking) {
-		[self zoomToSelected];
+		[self zoomToSelected:NO];
 	}
 }
 
@@ -156,6 +172,10 @@ typedef enum {
 	MKMapPoint minPoint = MKMapPointMake(MKMapRectGetMinX(visibleRect), MKMapRectGetMinY(visibleRect));
 	MKMapPoint maxPoint = MKMapPointMake(MKMapRectGetMaxX(visibleRect), MKMapRectGetMaxY(visibleRect));
 	return MKMetersBetweenMapPoints(minPoint, maxPoint);
+}
+
+- (CGFloat)accuracy {
+	return self.mapView.userLocation.location.horizontalAccuracy;
 }
 
 - (void)setUserLocationState:(AdvMapViewUserLocationState)userLocationState {
@@ -184,17 +204,21 @@ typedef enum {
 	if (userLocationState >= AdvMapViewUserLocationStateOn) {
 		self.focusCoordinate = self.mapView.userLocation.coordinate;
 	}
+	
+	if (userLocationState == AdvMapViewUserLocationStateOn) {
+		[self removeAllItemsFarAwayFromFocusPoint];
+	}
 }
 
 #pragma mark Internal: Functions
 
-- (void)moveToFocusCoordinate {
+- (void)moveToFocusCoordinate:(BOOL)animated {
 	MKCoordinateRegion region = self.mapView.region;
 	region.center = self.focusCoordinate;
-	[self.mapView setRegion:region animated:YES];
+	[self.mapView setRegion:region animated:animated];
 }
 
-- (void)zoomToSelected {
+- (void)zoomToSelected:(BOOL)animated {
 	NSUInteger selectedIndex = self.pagingView.selectedIndex;
 	if (self.items.count > 0) {
 		id<AdvMapViewItem> selectedItem = [self.items objectAtIndex:selectedIndex];
@@ -207,9 +231,9 @@ typedef enum {
 		MKMapRect visibleRect = MKMapRectUnion(focusRect, selectedRect);
 		UIEdgeInsets insets = UIEdgeInsetsMake(100.0,40.0,60.0,40.0);
 		
-		[self.mapView setVisibleMapRect:visibleRect edgePadding:insets animated:YES];
+		[self.mapView setVisibleMapRect:visibleRect edgePadding:insets animated:animated];
 	} else {
-		[self moveToFocusCoordinate];
+		[self moveToFocusCoordinate:animated];
 	}
 }
 
@@ -323,6 +347,8 @@ typedef enum {
 	}
 	
 	[self removeItemsOffScreen];
+	
+	[self.pagingView updateAllItems];
 }
 
 #pragma mark Internal: Search Bar Delegate
@@ -353,12 +379,20 @@ typedef enum {
 				return;
 			}
 			
+			// reset the paging view to zero
+			[self.pagingView scrollToIndex:0 animated:NO];
+			
+			[self removeAllItems];
+			
 			CLPlacemark *placemark = [placemarks objectAtIndex:0];
 			self.focusCoordinate = placemark.location.coordinate;
 			
 			// add an annotation to the map for the search
 			self.focusAnnotation = [[[AdvMapViewFocusAnnotation alloc] initWithPlacemark:placemark] autorelease];
 			[self.mapView addAnnotation:self.focusAnnotation];
+			
+			// display the annotation view for the focus point
+			[self.mapView selectAnnotation:self.focusAnnotation animated:YES];
 		}];
 	}
 }
@@ -366,14 +400,17 @@ typedef enum {
 #pragma mark Internal: AdvMapViewPagingView Delegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-	id<AdvMapViewItem> selectedItem = [self.items objectAtIndex:self.pagingView.selectedIndex];
-	for (id<MKAnnotation> annotation in self.mapView.annotations) {
-		if ([annotation isKindOfClass:[AdvMapViewAnnotation class]]) {
-			AdvMapViewAnnotation* advMapViewAnnotation = (AdvMapViewAnnotation*)annotation;
-			if ([advMapViewAnnotation.item isEqual:selectedItem]) {
-				[self.mapView selectAnnotation:advMapViewAnnotation animated:NO];
-				[self zoomToSelected];
-				break;
+	int selectedIndex = self.pagingView.selectedIndex;
+	if (self.items.count > selectedIndex) {
+		id<AdvMapViewItem> selectedItem = [self.items objectAtIndex:selectedIndex];
+		for (id<MKAnnotation> annotation in self.mapView.annotations) {
+			if ([annotation isKindOfClass:[AdvMapViewAnnotation class]]) {
+				AdvMapViewAnnotation* advMapViewAnnotation = (AdvMapViewAnnotation*)annotation;
+				if ([advMapViewAnnotation.item isEqual:selectedItem]) {
+					[self.mapView selectAnnotation:advMapViewAnnotation animated:NO];
+					[self zoomToSelected:YES];
+					break;
+				}
 			}
 		}
 	}
