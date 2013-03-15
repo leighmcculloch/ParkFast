@@ -10,6 +10,7 @@
 #import "AdvMapView.h"
 #import "HttpRequest.h"
 #import "FPCarPark.h"
+#import "/usr/include/sqlite3.h"
 
 @interface FPViewController ()
 
@@ -56,22 +57,56 @@
 #pragma mark AdvMapView Delegate
 
 - (void)advMapView:(AdvMapView*)advMapView regionDidChangeAnimated:(BOOL)animated {
-	NSString* url = [NSString stringWithFormat:@"http://192.168.5.6:5000/carparks/near/%f,%f/%f", self.advMapView.centerCoordinate.longitude, self.advMapView.centerCoordinate.latitude, self.advMapView.spanMeters];
 	
-	[self.request getJsonFromURL:url andCallback:^(NSString *url, NSDictionary *json) {
-		
-		NSArray* result = [json objectForKey:@"result"];
-		if (!result) {
-			return;
+	NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *docsDir = [dirPaths objectAtIndex:0];
+	NSString *dbPath = [docsDir stringByAppendingPathComponent:@"findparking.sqlite3"];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:dbPath] == NO)
+		dbPath = [[NSBundle mainBundle] pathForResource:@"findparking" ofType:@"sqlite3"];
+	
+	sqlite3 *db;
+	if (sqlite3_open([dbPath UTF8String], &db) == SQLITE_OK)
+	{
+		// find all carparks that are roughly on screen (the calculation used here is a fast estimate)
+		sqlite3_stmt *stmt;
+		const char *stmtSql = "SELECT rowid, name, address, gps_lat, gps_lon, fee_summary, ((($lat - gps_lat) + ($lon - gps_lon)) * 111.0) AS distance FROM carpark WHERE distance < $distance";
+		if (sqlite3_prepare_v2(db, stmtSql, -1, &stmt, NULL) == SQLITE_OK) {
+			if (sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$lat"), self.advMapView.centerCoordinate.latitude) == SQLITE_OK
+			 && sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$lon"), self.advMapView.centerCoordinate.longitude) == SQLITE_OK
+			 && sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$distance"), self.advMapView.spanMeters / 1000.0) == SQLITE_OK) {
+			
+				while (sqlite3_step(stmt) == SQLITE_ROW) {
+					FPCarPark* carpark = [[FPCarPark alloc] init];
+
+					// this identifier uniquely identifies are carpark
+					carpark.identifier = [NSString stringWithFormat:@"%lld", sqlite3_column_int64(stmt, 0)];
+					NSLog(@"id = %@", carpark.identifier);
+					
+					// the basic carpark info
+					carpark.title = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 1)];
+					carpark.address = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 2)];
+					
+					// set the lat / lon
+					CLLocationDegrees lat = sqlite3_column_double(stmt, 3);
+					CLLocationDegrees lon = sqlite3_column_double(stmt, 4);
+					carpark.coordinate = CLLocationCoordinate2DMake(lat, lon);
+					
+					// set the fee summary and price info
+					carpark.prices = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 5)];
+					
+					// set our estimated distance on the carpark, but this will be updated later anyway
+					carpark.distance = sqlite3_column_double(stmt, 6);
+					
+					[self.advMapView addItem:carpark];
+				}
+			}
+			sqlite3_finalize(stmt);
 		}
-		
-		// add each carpark to the advMapView
-		for (NSDictionary* carparkDic in result) {
-			FPCarPark* carpark = [[FPCarPark alloc] initWithDictionary:carparkDic];
-			[self.advMapView addItem:carpark];
+		else {
+			NSLog(@"No database could be loaded.");
 		}
-		
-	}];
+		sqlite3_close(db);
+	}
 }
 
 

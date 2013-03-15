@@ -12,6 +12,13 @@
 
 @synthesize order;
 
+- (id)init {
+    self = [super init];
+    if (self) {
+    }
+    return self;
+}
+
 - (id)initWithDictionary:(NSDictionary*)dic {
     self = [super init];
     if (self) {

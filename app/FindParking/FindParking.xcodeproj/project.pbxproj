@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2007F70616E31C9300DDB298 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2007F70516E31C9300DDB298 /* libsqlite3.dylib */; };
 		20099D7A16B14137008F6C28 /* AdvMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20099D7116B14137008F6C28 /* AdvMapView.m */; };
 		20099D7B16B14137008F6C28 /* AdvMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20099D7216B14137008F6C28 /* AdvMapView.xib */; };
 		20099D7C16B14137008F6C28 /* AdvMapViewInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20099D7416B14137008F6C28 /* AdvMapViewInfoView.m */; };
@@ -32,6 +33,7 @@
 		20099DBE16B266FB008F6C28 /* AdvMapViewFocusAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 20099DBD16B266FB008F6C28 /* AdvMapViewFocusAnnotation.m */; };
 		20099DC116B27AFB008F6C28 /* location-arrow-tracking.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */; };
 		20099DC216B27AFB008F6C28 /* location-arrow-tracking@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */; };
+		201B696116F2977800A5A404 /* findparking.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 201B696016F2977800A5A404 /* findparking.sqlite3 */; };
 		20E5106F16B140F3009E19E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5106E16B140F3009E19E7 /* UIKit.framework */; };
 		20E5107116B140F3009E19E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5107016B140F3009E19E7 /* Foundation.framework */; };
 		20E5107316B140F3009E19E7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5107216B140F3009E19E7 /* CoreGraphics.framework */; };
@@ -46,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2007F70516E31C9300DDB298 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		20099D7016B14137008F6C28 /* AdvMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvMapView.h; sourceTree = "<group>"; };
 		20099D7116B14137008F6C28 /* AdvMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvMapView.m; sourceTree = "<group>"; };
 		20099D7216B14137008F6C28 /* AdvMapView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AdvMapView.xib; sourceTree = "<group>"; };
@@ -81,6 +84,7 @@
 		20099DBD16B266FB008F6C28 /* AdvMapViewFocusAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvMapViewFocusAnnotation.m; sourceTree = "<group>"; };
 		20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow-tracking.png"; sourceTree = "<group>"; };
 		20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow-tracking@2x.png"; sourceTree = "<group>"; };
+		201B696016F2977800A5A404 /* findparking.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = findparking.sqlite3; sourceTree = "<group>"; };
 		20E5106A16B140F3009E19E7 /* FindParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E5106E16B140F3009E19E7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		20E5107016B140F3009E19E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -104,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2007F70616E31C9300DDB298 /* libsqlite3.dylib in Frameworks */,
 				20099D8F16B1F443008F6C28 /* CoreLocation.framework in Frameworks */,
 				20099D8516B14309008F6C28 /* MapKit.framework in Frameworks */,
 				20E5106F16B140F3009E19E7 /* UIKit.framework in Frameworks */,
@@ -167,6 +172,14 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		201B695F16F2977800A5A404 /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				201B696016F2977800A5A404 /* findparking.sqlite3 */,
+			);
+			path = DB;
+			sourceTree = "<group>";
+		};
 		20E5105F16B140F3009E19E7 = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +200,7 @@
 		20E5106D16B140F3009E19E7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2007F70516E31C9300DDB298 /* libsqlite3.dylib */,
 				20099D8E16B1F443008F6C28 /* CoreLocation.framework */,
 				20099D8416B14309008F6C28 /* MapKit.framework */,
 				20E5106E16B140F3009E19E7 /* UIKit.framework */,
@@ -209,6 +223,7 @@
 				20E5108D16B140F3009E19E7 /* FPViewController.m */,
 				20099D9916B20F9E008F6C28 /* FPCarPark.h */,
 				20099D9A16B20F9F008F6C28 /* FPCarPark.m */,
+				201B695F16F2977800A5A404 /* DB */,
 				20E5107516B140F3009E19E7 /* Supporting Files */,
 			);
 			path = FindParking;
@@ -299,6 +314,7 @@
 				20099DB216B22164008F6C28 /* AdvMapViewInfoView.xib in Resources */,
 				20099DC116B27AFB008F6C28 /* location-arrow-tracking.png in Resources */,
 				20099DC216B27AFB008F6C28 /* location-arrow-tracking@2x.png in Resources */,
+				201B696116F2977800A5A404 /* findparking.sqlite3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

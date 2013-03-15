@@ -18,8 +18,9 @@
 @property (retain, nonatomic) NSString* prices;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 @property (readonly, nonatomic) CLLocation* location;
-@property (assign, nonatomic)CLLocationDistance distance;
+@property (assign, nonatomic) CLLocationDistance distance;
 
+- (id)init;
 - (id)initWithDictionary:(NSDictionary*)dic;
 
 
