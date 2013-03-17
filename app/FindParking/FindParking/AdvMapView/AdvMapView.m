@@ -11,6 +11,19 @@
 #import "AdvMapViewFocusAnnotation.h"
 #import "MKMapRectForCoordinateRegion.h"
 
+#define MIN_RELEVANT_DISTANCE_TO_FOCUS_METERS 2000
+
+#define AUTO_ZOOM_MIN_COORD_DELTA 0.01
+#define AUTO_ZOOM_MAP_INSET_TOP 100.0
+#define AUTO_ZOOM_MAP_INSET_LEFT 40.0
+#define AUTO_ZOOM_MAP_INSET_BOTTOM 60.0
+#define AUTO_ZOOM_MAP_INSET_RIGHT 40.0
+
+#define ANNOTATION_HIGHLIGHT_CIRCLE_RADIUS_METERS 100.0
+#define ANNOTATION_HIGHLIGHT_CIRCLE_LINE_WIDTH 6.0
+#define ANNOTATION_HIGHLIGHT_CIRCLE_LINE_COLOR_ALPHA 0.2
+#define MAX_ZOOM_OUT 0.05
+
 typedef enum {
 	AdvMapViewUserLocationStateOff = 0,
 	AdvMapViewUserLocationStateOn = 1,
@@ -125,11 +138,16 @@ typedef enum {
 	}
 }
 
-- (void)removeItemsOffScreen {
+- (void)removeItemsNotRelevant {
+	
+	// get the distance that the center of the view is away from the focus point
 	CLLocation* focusLocation = [[CLLocation alloc] initWithLatitude:self.focusCoordinate.latitude longitude:self.focusCoordinate.longitude];
 	CLLocation* centerLocation = [[CLLocation alloc] initWithLatitude:self.centerCoordinate.latitude longitude:self.centerCoordinate.longitude];
 	CLLocationDistance distance = [centerLocation distanceFromLocation:focusLocation] + self.spanMeters;
 	
+	// ensure the distance isn't less than 8.5km's which is our min distance away
+	if (distance < MIN_RELEVANT_DISTANCE_TO_FOCUS_METERS)
+		distance = MIN_RELEVANT_DISTANCE_TO_FOCUS_METERS;
 	
 	// remove any items that are further away from the focus than the current view is
 	for (int i = self.items.count - 1; i >= 0; i--) {
@@ -139,7 +157,9 @@ typedef enum {
 		}
 	}
 	
-	/*for (id<MKAnnotation> annotation in self.mapView.annotations) {
+	/*
+	 // removes the items off screen
+	 for (id<MKAnnotation> annotation in self.mapView.annotations) {
 		if ([annotation isKindOfClass:[MKUserLocation class]]) {
 			continue;
 		}
@@ -233,15 +253,15 @@ typedef enum {
 		MKMapRect selectedRect = MKMapRectMake(selectedPoint.x, selectedPoint.y, 0.1, 0.1);
 		MKMapRect focusRect = MKMapRectMake(focusPoint.x, focusPoint.y, 0.1, 0.1);
 		MKMapRect visibleRect = MKMapRectUnion(focusRect, selectedRect);
-		UIEdgeInsets insets = UIEdgeInsetsMake(100.0,40.0,60.0,40.0);
+		UIEdgeInsets insets = UIEdgeInsetsMake(AUTO_ZOOM_MAP_INSET_TOP,AUTO_ZOOM_MAP_INSET_LEFT,AUTO_ZOOM_MAP_INSET_BOTTOM,AUTO_ZOOM_MAP_INSET_RIGHT);
 		
 		// convert it to a region, and bound the zoom
 		MKCoordinateRegion region = MKCoordinateRegionForMapRect(visibleRect);
-		if (region.span.latitudeDelta < 0.01) {
-			region.span.latitudeDelta = 0.01;
+		if (region.span.latitudeDelta < AUTO_ZOOM_MIN_COORD_DELTA) {
+			region.span.latitudeDelta = AUTO_ZOOM_MIN_COORD_DELTA;
 		}
-		if (region.span.longitudeDelta < 0.01) {
-			region.span.longitudeDelta = 0.01;
+		if (region.span.longitudeDelta < AUTO_ZOOM_MIN_COORD_DELTA) {
+			region.span.longitudeDelta = AUTO_ZOOM_MIN_COORD_DELTA;
 		}
 		
 		// convert back to the visible rect after bounding
@@ -323,7 +343,7 @@ typedef enum {
 	if ([view.annotation isKindOfClass:[AdvMapViewAnnotation class]]) {
 		AdvMapViewAnnotation *annotation = (AdvMapViewAnnotation*)view.annotation;
 		
-		MKCircle* circle = [MKCircle circleWithCenterCoordinate:annotation.coordinate radius:100.0];
+		MKCircle* circle = [MKCircle circleWithCenterCoordinate:annotation.coordinate radius:ANNOTATION_HIGHLIGHT_CIRCLE_RADIUS_METERS];
 		[mapView removeOverlays:mapView.overlays];
 		[mapView addOverlay:circle];
 		
@@ -336,21 +356,21 @@ typedef enum {
 
 - (MKOverlayView *)mapView:(MKMapView *)_mapView viewForOverlay:(id < MKOverlay >)overlay {
 	MKCircleView *circleView = [[MKCircleView alloc] initWithCircle:(MKCircle *)overlay];
-	circleView.fillColor = [[UIColor blueColor] colorWithAlphaComponent:0.2f];
+	circleView.fillColor = [[UIColor blueColor] colorWithAlphaComponent:ANNOTATION_HIGHLIGHT_CIRCLE_LINE_COLOR_ALPHA];
     circleView.strokeColor = [UIColor blueColor];
-	circleView.lineWidth = 6.0f;
+	circleView.lineWidth = ANNOTATION_HIGHLIGHT_CIRCLE_LINE_WIDTH;
     return [circleView autorelease];
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
 	BOOL updateRegion = NO;
 	MKCoordinateRegion region = mapView.region;
-	if (region.span.latitudeDelta > 0.05) {
-		region.span.latitudeDelta = 0.05;
+	if (region.span.latitudeDelta > MAX_ZOOM_OUT) {
+		region.span.latitudeDelta = MAX_ZOOM_OUT;
 		updateRegion = YES;
 	}
-	if (region.span.longitudeDelta > 0.05) {
-		region.span.longitudeDelta = 0.05;
+	if (region.span.longitudeDelta > MAX_ZOOM_OUT) {
+		region.span.longitudeDelta = MAX_ZOOM_OUT;
 		updateRegion = YES;
 	}
 	
@@ -362,7 +382,7 @@ typedef enum {
 		[self.delegate advMapView:self regionDidChangeAnimated:animated];
 	}
 	
-	[self removeItemsOffScreen];
+	[self removeItemsNotRelevant];
 	
 	[self.pagingView updateAllItems];
 }

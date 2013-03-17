@@ -31,6 +31,6 @@
 + (AdvMapView*)viewFromNib;
 - (void)addItem:(id<AdvMapViewItem>)item;
 - (void)removeItem:(id<AdvMapViewItem>)item;
-- (void)removeItemsOffScreen;
+- (void)removeItemsNotRelevant;
 
 @end
