@@ -9,6 +9,7 @@
 #import "AdvMapView.h"
 #import "AdvMapViewAnnotation.h"
 #import "AdvMapViewFocusAnnotation.h"
+#import "MKMapRectForCoordinateRegion.h"
 
 typedef enum {
 	AdvMapViewUserLocationStateOff = 0,
@@ -224,7 +225,8 @@ typedef enum {
 	NSUInteger selectedIndex = self.pagingView.selectedIndex;
 	if (self.items.count > 0) {
 		id<AdvMapViewItem> selectedItem = [self.items objectAtIndex:selectedIndex];
-
+		
+		// get the visible rect
 		MKMapPoint selectedPoint = MKMapPointForCoordinate(selectedItem.coordinate);
 		MKMapPoint focusPoint = MKMapPointForCoordinate(self.focusCoordinate);
 		
@@ -232,6 +234,18 @@ typedef enum {
 		MKMapRect focusRect = MKMapRectMake(focusPoint.x, focusPoint.y, 0.1, 0.1);
 		MKMapRect visibleRect = MKMapRectUnion(focusRect, selectedRect);
 		UIEdgeInsets insets = UIEdgeInsetsMake(100.0,40.0,60.0,40.0);
+		
+		// convert it to a region, and bound the zoom
+		MKCoordinateRegion region = MKCoordinateRegionForMapRect(visibleRect);
+		if (region.span.latitudeDelta < 0.01) {
+			region.span.latitudeDelta = 0.01;
+		}
+		if (region.span.longitudeDelta < 0.01) {
+			region.span.longitudeDelta = 0.01;
+		}
+		
+		// convert back to the visible rect after bounding
+		visibleRect = MKMapRectForCoordinateRegion(region);
 		
 		[self.mapView setVisibleMapRect:visibleRect edgePadding:insets animated:animated];
 	} else {

@@ -88,6 +88,7 @@
 		201B696016F2977800A5A404 /* findparking.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = findparking.sqlite3; sourceTree = "<group>"; };
 		207E754D16F30A8E0003E316 /* sqlite3_latlondistkm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite3_latlondistkm.h; sourceTree = "<group>"; };
 		207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3_latlondistkm.c; sourceTree = "<group>"; };
+		207E755116F543350003E316 /* MKMapRectForCoordinateRegion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MKMapRectForCoordinateRegion.h; sourceTree = "<group>"; };
 		20E5106A16B140F3009E19E7 /* FindParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E5106E16B140F3009E19E7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		20E5107016B140F3009E19E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -154,6 +155,7 @@
 				20099D9716B20DF6008F6C28 /* HttpRequest.m */,
 				207E754D16F30A8E0003E316 /* sqlite3_latlondistkm.h */,
 				207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */,
+				207E755116F543350003E316 /* MKMapRectForCoordinateRegion.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
