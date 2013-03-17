@@ -150,11 +150,17 @@ typedef enum {
 		distance = MIN_RELEVANT_DISTANCE_TO_FOCUS_METERS;
 	
 	// remove any items that are further away from the focus than the current view is
-	for (int i = self.items.count - 1; i >= 0; i--) {
+	// count backwards so removing items doesn't affect the indexes of the items yet to be considered
+	// NOTE: we won't delete the selected item or any item closer than it
+	for (int i = self.items.count - 1; i > (int)self.pagingView.selectedIndex; i--) {
 		id<AdvMapViewItem> item = self.items[self.items.count-1];
-		if (item.distance > distance) {
-			[self removeItem:item];
+		
+		// once we've got within the distance, stop removing items since they are ordered closest to furthest
+		if (item.distance < distance) {
+			break;
 		}
+		
+		[self removeItem:item];
 	}
 	
 	/*
@@ -348,6 +354,7 @@ typedef enum {
 		[mapView addOverlay:circle];
 		
 		if (self.pagingView.selectedIndex != annotation.item.order) {
+			self.selectedItem = annotation.item;
 			[self.pagingView scrollToItem:annotation.item animated:YES];
 		}
 		return;
