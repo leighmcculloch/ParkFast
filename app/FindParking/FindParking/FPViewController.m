@@ -73,13 +73,12 @@
 	if (sqlite3_open([dbPath UTF8String], &db) == SQLITE_OK)
 	{
 		// create the custom functions
-		sqlite3_create_function(db, "latlondistkm", 4, SQLITE_UTF8, NULL, &sqlite3_latlondistkm, NULL, NULL);
+		//sqlite3_create_function(db, "latlondistkm", 4, SQLITE_UTF8, NULL, &sqlite3_latlondistkm, NULL, NULL);
 		
 		// find all carparks that are roughly on screen (the calculation used here is a fast estimate)
 		sqlite3_stmt *stmt;
 		const char *stmtSql = "SELECT id, name, address, gps_lat, gps_lon, fee_summary, ((ABS($lat - gps_lat) + ABS($lon - gps_lon)) * 111.0) AS distance FROM carpark WHERE distance < $distance ORDER BY distance ASC";
 		//const char *stmtSql = "SELECT id, name, address, gps_lat, gps_lon, fee_summary FROM carpark WHERE LATLONDISTKM(gps_lat, gps_lon, $lat, $lon) < $distance";
-		NSLog(@"span = %fkm", self.advMapView.spanMeters / 1000.0);
 		if (sqlite3_prepare_v2(db, stmtSql, -1, &stmt, NULL) == SQLITE_OK) {
 			if (sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$lat"), self.advMapView.centerCoordinate.latitude) == SQLITE_OK
 			 && sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$lon"), self.advMapView.centerCoordinate.longitude) == SQLITE_OK
@@ -107,7 +106,6 @@
 					count++;
 					[self.advMapView addItem:carpark];
 				}
-				NSLog(@"count = %d", count);
 			}
 			sqlite3_finalize(stmt);
 		}
