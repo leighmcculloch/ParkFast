@@ -125,8 +125,8 @@
 }
 
 - (void)updateSelectedItem {
-	if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) {
-		[self.delegate scrollViewDidEndDecelerating:self];
+	if ([self.delegate respondsToSelector:@selector(advMapViewPagingViewSelectedItemUpdate:)]) {
+		[self.delegate advMapViewPagingViewSelectedItemUpdate:self];
 	}
 }
 

@@ -180,6 +180,33 @@ typedef enum {
 	}*/
 }
 
+- (void)selectItem:(id<AdvMapViewItem>)item {
+	// don't do any updating if the new selected item was the same as last time
+	if (item == self.selectedItem) {
+		return;
+	}
+	
+	// cache the item selected so we can access it and determine if it's changed next time
+	self.selectedItem = item;
+	
+	// if the pagingView isn't already selecting the item, select it
+	if (self.pagingView.selectedIndex != item.order) {
+		[self.pagingView scrollToItem:item animated:NO];
+	}
+	
+	// zoom in on the new selected item
+	for (id<MKAnnotation> annotation in self.mapView.annotations) {
+		if ([annotation isKindOfClass:[AdvMapViewAnnotation class]]) {
+			AdvMapViewAnnotation* advMapViewAnnotation = (AdvMapViewAnnotation*)annotation;
+			if ([advMapViewAnnotation.item isEqual:item]) {
+				[self.mapView selectAnnotation:advMapViewAnnotation animated:NO];
+				[self zoomToSelected:YES];
+				break;
+			}
+		}
+	}
+}
+
 - (void)setFocusCoordinate:(CLLocationCoordinate2D)focusCoordinate {
 	// get rid of any previous focus annotation created by a search
 	if (self.focusAnnotation) {
@@ -442,7 +469,7 @@ typedef enum {
 
 #pragma mark Internal: AdvMapViewPagingView Delegate
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+- (void)advMapViewPagingViewSelectedItemUpdate:(AdvMapViewPagingView*)pagingView {
 	
 	// check that we actually have items to select (it can fire with zero and no items)
 	int selectedIndex = self.pagingView.selectedIndex;
@@ -451,26 +478,26 @@ typedef enum {
 		// get the new item that's selected from the list
 		id<AdvMapViewItem> selectedItem = [self.items objectAtIndex:selectedIndex];
 		
-		// don't do any updating if the new selected item was the same as last time
-		if (selectedItem == self.selectedItem) {
-			return;
-		}
+		[self selectItem:selectedItem];
 		
-		// cache the item selected so we can access it and determine if it's changed next time
-		self.selectedItem = selectedItem;
-		
-		// zoom in on the new selected item
-		for (id<MKAnnotation> annotation in self.mapView.annotations) {
-			if ([annotation isKindOfClass:[AdvMapViewAnnotation class]]) {
-				AdvMapViewAnnotation* advMapViewAnnotation = (AdvMapViewAnnotation*)annotation;
-				if ([advMapViewAnnotation.item isEqual:selectedItem]) {
-					[self.mapView selectAnnotation:advMapViewAnnotation animated:NO];
-					[self zoomToSelected:YES];
-					break;
-				}
 			}
+	
 		}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	
+	// check that we actually have items to select (it can fire with zero and no items)
+	int selectedIndex = self.pagingView.selectedIndex;
+	if (self.items.count > selectedIndex) {
+		
+		// if the selected item has been changed manually by the user, turn tracking off
+		self.userLocationState = AdvMapViewUserLocationStateOff;
+
+		// other than the above, do the same things as if we've been told the selected item has been updated
+		[self advMapViewPagingViewSelectedItemUpdate:(AdvMapViewPagingView*)scrollView];
+		
 	}
+	
 }
 
 #pragma mark Internal: Map Guester Tracking

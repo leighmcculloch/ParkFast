@@ -10,8 +10,17 @@
 #import "AdvMapViewInfoView.h"
 #import "AdvMapViewItem.h"
 
+@class AdvMapViewPagingView;
+
+@protocol AdvMapViewPagingViewDelegate <UIScrollViewDelegate>
+
+- (void)advMapViewPagingViewSelectedItemUpdate:(AdvMapViewPagingView*)pagingView;
+
+@end
+
 @interface AdvMapViewPagingView : UIScrollView
 
+@property (nonatomic, assign) id<AdvMapViewPagingViewDelegate> delegate;
 @property (nonatomic, readonly) NSUInteger selectedIndex;
 
 - (void)addItem:(id<AdvMapViewItem>)item;
