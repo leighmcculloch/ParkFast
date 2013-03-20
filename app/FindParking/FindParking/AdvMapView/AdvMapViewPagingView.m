@@ -43,6 +43,13 @@
 	// store info view, index doesn't matter as they are ordered by their order property
 	[self.infoViews addObject:infoView];
 	
+	// set an initial frame that puts it definitely off screen
+	CGRect frame;
+	frame.origin.x = -self.frame.size.width;
+	frame.origin.y = 0;
+	frame.size = self.frame.size;
+	infoView.frame = frame;
+	
 	// add as subview
 	[self addSubview:infoView];
 	
@@ -91,7 +98,7 @@
 	for (int i=0; i<self.infoViews.count; i++) {
 		AdvMapViewInfoView* infoView = [self.infoViews objectAtIndex:i];
 		
-		// if this infoView is the current view on screen, it's left X position will be within half the screen width
+		// if this infoView is the current view on screen
 		if (infoView.frame.origin.x == self.contentOffset.x) {
 			selectedItem = infoView.item;
 		}
