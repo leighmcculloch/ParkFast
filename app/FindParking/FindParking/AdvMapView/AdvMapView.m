@@ -207,6 +207,12 @@ typedef enum {
 	}
 }
 
+- (void)selectClosest {
+	if (self.items.count > 0) {
+		[self selectItem:self.items[0]];
+	}
+}
+
 - (void)setFocusCoordinate:(CLLocationCoordinate2D)focusCoordinate {
 	// get rid of any previous focus annotation created by a search
 	if (self.focusAnnotation) {
@@ -218,6 +224,11 @@ typedef enum {
 	[self.items sortUsingSelector:@selector(comparePriority:)];
 	[self updateItemsOrder:0];
 	[self.pagingView updateAllItems];
+	
+	if (self.userLocationState != AdvMapViewUserLocationStateOff) {
+		[self selectClosest];
+	}
+	
 	if (self.userLocationState != AdvMapViewUserLocationStateTracking) {
 		[self zoomToSelected:NO];
 	}
@@ -480,9 +491,9 @@ typedef enum {
 		
 		[self selectItem:selectedItem];
 		
-			}
+	}
 	
-		}
+}
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
 	
