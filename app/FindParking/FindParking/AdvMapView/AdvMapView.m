@@ -214,24 +214,44 @@ typedef enum {
 }
 
 - (void)setFocusCoordinate:(CLLocationCoordinate2D)focusCoordinate {
+	
+	// default: select closest when tracking the users location
+	BOOL selectClosest = self.userLocationState != AdvMapViewUserLocationStateOff;
+	
+	// default: zoom only when tracking the users location (but not if we're doing so with the compass!)
+	BOOL zoomToSelected = self.userLocationState == AdvMapViewUserLocationStateOn;
+	
+	[self setFocusCoordinate:focusCoordinate selectClosest:selectClosest zoomToSelected:zoomToSelected];
+	
+}
+
+- (void)setFocusCoordinate:(CLLocationCoordinate2D)focusCoordinate selectClosest:(BOOL)selectClosest zoomToSelected:(BOOL)zoomToSelected {
+	
 	// get rid of any previous focus annotation created by a search
 	if (self.focusAnnotation) {
 		[self.mapView removeAnnotation:self.focusAnnotation];
 		self.focusAnnotation = nil;
 	}
+	
+	// update the coordinate
 	_focusCoordinate = focusCoordinate;
+	
+	// update the state of everything that's dependent on the focus coordinate
 	[self updateAllItemsDistance];
 	[self.items sortUsingSelector:@selector(comparePriority:)];
 	[self updateItemsOrder:0];
 	[self.pagingView updateAllItems];
 	
-	if (self.userLocationState != AdvMapViewUserLocationStateOff) {
+	// if specified, select the closest carpark
+	if (selectClosest) {
 		[self selectClosest];
 	}
 	
-	if (self.userLocationState != AdvMapViewUserLocationStateTracking) {
+	// if specified, zoom so that the selected carpark and the focus coordinate are in view
+	if (zoomToSelected) {
 		[self zoomToSelected:NO];
 	}
+	
 }
 
 - (CLLocationCoordinate2D)centerCoordinate {
@@ -352,9 +372,15 @@ typedef enum {
 
 #pragma mark Internal: Map Kit Delegate
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
+	
 	if (self.userLocationState == AdvMapViewUserLocationStateOn || self.userLocationState == AdvMapViewUserLocationStateTracking) {
+		// if we're tracking the user, set the focus coordinate as we normally would
 		self.focusCoordinate = userLocation.coordinate;
+	} else if (self.focusAnnotation == nil) {
+		// if we're not tracking the user, only update the focus coordinate if we don't have a focus annotation defined which would be for a locked location that isn't the user location
+		[self setFocusCoordinate:userLocation.coordinate selectClosest:NO zoomToSelected:NO];
 	}
+	
 }
 
 - (void)mapView:(MKMapView *)mapView didChangeUserTrackingMode:(MKUserTrackingMode)mode animated:(BOOL)animated {
