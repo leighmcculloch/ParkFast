@@ -228,10 +228,7 @@ typedef enum {
 - (void)setFocusCoordinate:(CLLocationCoordinate2D)focusCoordinate selectClosest:(BOOL)selectClosest zoomToSelected:(BOOL)zoomToSelected {
 	
 	// get rid of any previous focus annotation created by a search
-	if (self.focusAnnotation) {
-		[self.mapView removeAnnotation:self.focusAnnotation];
-		self.focusAnnotation = nil;
-	}
+	[self removeFocusAnnotation];
 	
 	// update the coordinate
 	_focusCoordinate = focusCoordinate;
@@ -252,6 +249,13 @@ typedef enum {
 		[self zoomToSelected:NO];
 	}
 	
+}
+
+- (void)removeFocusAnnotation {
+	if (self.focusAnnotation) {
+		[self.mapView removeAnnotation:self.focusAnnotation];
+		self.focusAnnotation = nil;
+	}
 }
 
 - (CLLocationCoordinate2D)centerCoordinate {
@@ -462,6 +466,10 @@ typedef enum {
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
 	self.userLocationToggleButton.hidden = searchText.length > 0;
+	
+	if (searchText.length == 0) {
+		[self removeFocusAnnotation];
+	}
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
