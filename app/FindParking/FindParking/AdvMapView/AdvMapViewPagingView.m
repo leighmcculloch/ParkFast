@@ -86,8 +86,15 @@
 }
 
 - (void)updateInfoViews:(BOOL)updateLabels {
+	id<AdvMapViewItem> selectedItem = nil;
+	
 	for (int i=0; i<self.infoViews.count; i++) {
 		AdvMapViewInfoView* infoView = [self.infoViews objectAtIndex:i];
+		
+		// if this infoView is the current view on screen, it's left X position will be within half the screen width
+		if (infoView.frame.origin.x == self.contentOffset.x) {
+			selectedItem = infoView.item;
+		}
 		
 		CGRect frame;
 		frame.origin.x = self.frame.size.width * infoView.item.order;
@@ -99,6 +106,10 @@
 		if (updateLabels) {
 			[infoView updateLabels];
 		}
+	}
+	
+	if (selectedItem) {
+		[self scrollToItem:selectedItem animated:NO];
 	}
 }
 
