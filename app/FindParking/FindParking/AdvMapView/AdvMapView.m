@@ -233,6 +233,11 @@ typedef enum {
 	// update the coordinate
 	_focusCoordinate = focusCoordinate;
 	
+	// notify of the focus change
+	if ([self.delegate respondsToSelector:@selector(advMapViewFocusCoordinateChanged:)]) {
+		[self.delegate advMapViewFocusCoordinateChanged:self];
+	}
+	
 	// update the state of everything that's dependent on the focus coordinate
 	[self updateAllItemsDistance];
 	[self.items sortUsingSelector:@selector(comparePriority:)];

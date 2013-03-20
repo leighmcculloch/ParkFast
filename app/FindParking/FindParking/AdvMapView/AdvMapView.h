@@ -15,6 +15,7 @@
 
 @protocol AdvMapViewDelegate <NSObject>
 
+- (void)advMapViewFocusCoordinateChanged:(AdvMapView*)advMapView;
 - (void)advMapView:(AdvMapView*)advMapView regionDidChangeAnimated:(BOOL)animated;
 
 @end

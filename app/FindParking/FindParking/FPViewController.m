@@ -57,12 +57,23 @@
 
 #pragma mark AdvMapView Delegate
 
+#define DEFAULT_FOCUS_NEARBY_DISTANCE 2000
+
+- (void)advMapViewFocusCoordinateChanged:(AdvMapView*)advMapView {
+	[self loadCarParksAtCoord:self.advMapView.focusCoordinate spanMeters:DEFAULT_FOCUS_NEARBY_DISTANCE];
+}
+
 - (void)advMapView:(AdvMapView*)advMapView regionDidChangeAnimated:(BOOL)animated {
 	
 	if (advMapView.accuracy <= 1 || advMapView.accuracy > 500.0) {
 		return;
 	}
 	
+	[self loadCarParksAtCoord:self.advMapView.centerCoordinate spanMeters:self.advMapView.spanMeters];
+	
+}
+
+- (void)loadCarParksAtCoord:(CLLocationCoordinate2D)centerCoord spanMeters:(CGFloat)spanMeters {
 	NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *docsDir = [dirPaths objectAtIndex:0];
 	NSString *dbPath = [docsDir stringByAppendingPathComponent:@"findparking.sqlite3"];
@@ -80,14 +91,14 @@
 		const char *stmtSql = "SELECT id, name, address, gps_lat, gps_lon, fee_summary, ((ABS($lat - gps_lat) + ABS($lon - gps_lon)) * 111.0) AS distance FROM carpark WHERE distance < $distance ORDER BY distance ASC";
 		//const char *stmtSql = "SELECT id, name, address, gps_lat, gps_lon, fee_summary FROM carpark WHERE LATLONDISTKM(gps_lat, gps_lon, $lat, $lon) < $distance";
 		if (sqlite3_prepare_v2(db, stmtSql, -1, &stmt, NULL) == SQLITE_OK) {
-			if (sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$lat"), self.advMapView.centerCoordinate.latitude) == SQLITE_OK
-			 && sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$lon"), self.advMapView.centerCoordinate.longitude) == SQLITE_OK
-			 && sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$distance"), MIN(8.5, (self.advMapView.spanMeters / 1000.0))) == SQLITE_OK) {
+			if (sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$lat"), centerCoord.latitude) == SQLITE_OK
+				&& sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$lon"), centerCoord.longitude) == SQLITE_OK
+				&& sqlite3_bind_double(stmt, sqlite3_bind_parameter_index(stmt, "$distance"), MIN(8.5, (spanMeters / 1000.0))) == SQLITE_OK) {
 				
 				int count = 0;
 				while (sqlite3_step(stmt) == SQLITE_ROW) {
 					FPCarPark* carpark = [[FPCarPark alloc] init];
-
+					
 					// this identifier uniquely identifies are carpark
 					carpark.identifier = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(stmt, 0)];
 					
