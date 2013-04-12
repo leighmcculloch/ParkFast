@@ -517,10 +517,6 @@ typedef enum {
 #pragma mark Internal: Search Bar Delegate
 
 - (void)searchFor:(NSString*)searchText inlineSearch:(BOOL)inlineSearch {
-	if (!inlineSearch) {
-		self.searchResults = [NSArray array];
-		[self.searchTableView reloadData];
-	}
 	
 	if (searchText.length > 0) {
 		if (self.searchResults.count == 0) {
@@ -535,10 +531,6 @@ typedef enum {
 			if (!inlineSearch) {
 				if (error) {
 					NSLog(@"%@", error);
-					UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error retrieving location results. Please try again later, thank you!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-					[alertView show];
-					[alertView release];
-					return;
 				}
 
 				if ([placemarks count] == 0) {
@@ -607,6 +599,7 @@ typedef enum {
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	[self endEditing:YES];
+	[self searchFor:searchBar.text inlineSearch:NO];
 }
 
 #pragma mark Table View Data Source (Search Results)
