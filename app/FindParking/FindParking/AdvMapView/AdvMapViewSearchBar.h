@@ -10,4 +10,6 @@
 
 @interface AdvMapViewSearchBar : UISearchBar
 
+@property (assign, nonatomic) BOOL backgroundVisible;
+
 @end

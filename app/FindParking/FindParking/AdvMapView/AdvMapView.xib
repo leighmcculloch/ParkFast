@@ -60,7 +60,6 @@
 						<string key="NSFrame">{{0, 392}, {320, 68}}</string>
 						<reference key="NSSuperview" ref="47719816"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -76,10 +75,10 @@
 							<object class="IBUITableView" id="219791255">
 								<reference key="NSNextResponder" ref="383244797"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{0, 56}, {320, 404}}</string>
+								<string key="NSFrame">{{0, 64}, {320, 395}}</string>
 								<reference key="NSSuperview" ref="383244797"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="145382393"/>
+								<reference key="NSNextKeyView" ref="257532466"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="297785792">
 									<int key="NSColorSpace">3</int>
@@ -88,13 +87,14 @@
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<bool key="IBUIAlwaysBounceVertical">YES</bool>
+								<int key="IBUISeparatorStyle">1</int>
 								<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
 								<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
-								<float key="IBUIRowHeight">44</float>
+								<float key="IBUIRowHeight">52</float>
 								<float key="IBUISectionHeaderHeight">22</float>
 								<float key="IBUISectionFooterHeight">22</float>
 							</object>
-							<object class="IBUIActivityIndicatorView" id="145382393">
+							<object class="IBUIActivityIndicatorView" id="257532466">
 								<reference key="NSNextResponder" ref="383244797"/>
 								<int key="NSvFlags">-2147483360</int>
 								<string key="NSFrame">{{150, 112}, {20, 20}}</string>
@@ -247,7 +247,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">searchActivityIndicator</string>
 						<reference key="source" ref="47719816"/>
-						<reference key="destination" ref="145382393"/>
+						<reference key="destination" ref="257532466"/>
 					</object>
 					<int key="connectionID">180</int>
 				</object>
@@ -358,7 +358,7 @@
 						<reference key="object" ref="383244797"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="219791255"/>
-							<reference ref="145382393"/>
+							<reference ref="257532466"/>
 						</array>
 						<reference key="parent" ref="47719816"/>
 					</object>
@@ -369,7 +369,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">178</int>
-						<reference key="object" ref="145382393"/>
+						<reference key="object" ref="257532466"/>
 						<reference key="parent" ref="383244797"/>
 					</object>
 				</array>

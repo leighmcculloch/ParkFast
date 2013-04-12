@@ -614,9 +614,10 @@ typedef enum {
 		static NSString *cellIdentifier = @"currentloc";
 		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier] autorelease];
 			cell.textLabel.textColor = [UIColor colorWithRed:0 green:136.0/255.0 blue:247.0/255.0 alpha:1];
-			cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info-bar-bg.png"]] autorelease];
+			cell.textLabel.backgroundColor = [UIColor clearColor];
+			//cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search-results-row-bg.png"]] autorelease];
 		}
 		cell.textLabel.text = @"Current Location";
 	} else {
@@ -624,6 +625,9 @@ typedef enum {
 		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier] autorelease];
+			cell.textLabel.backgroundColor = [UIColor clearColor];
+			cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+			//cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"search-results-row-bg.png"]] autorelease];
 		}
 		CLPlacemark *placemark = self.searchResults[indexPath.row - 1];
 		cell.textLabel.text = placemark.title;
@@ -674,6 +678,12 @@ typedef enum {
 
 - (void)setSearchResultsViewState:(BOOL)visible {
 	self.searchView.hidden = !visible;
+	self.searchBar.backgroundVisible = visible;
+	if (visible) {
+		self.searchBar.placeholder = @"Destination";
+	} else {
+		self.searchBar.placeholder = @"Current Location";
+	}
 	[self.searchBar setShowsCancelButton:visible animated:YES];
 	self.userLocationToggleButton.hidden = self.searchBar.text.length != 0;
 }

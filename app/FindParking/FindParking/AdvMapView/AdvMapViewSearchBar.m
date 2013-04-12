@@ -9,6 +9,12 @@
 #import "AdvMapViewSearchBar.h"
 #import "UIImage+imageWithColor.h"
 
+@interface AdvMapViewSearchBar ()
+
+@property (retain, nonatomic) UIImage *originalBackgroundImage;
+
+@end
+
 @implementation AdvMapViewSearchBar
 
 - (id)initWithFrame:(CGRect)frame {
@@ -24,7 +30,17 @@
 }
 
 - (void)_init {
-	self.backgroundImage = [UIImage imageWithColor:[UIColor clearColor]];
+	self.backgroundVisible = NO;
+}
+
+- (void)setBackgroundVisible:(BOOL)backgroundVisible {
+	if (backgroundVisible) {
+		self.backgroundImage = self.originalBackgroundImage;
+	} else {
+		self.originalBackgroundImage = self.backgroundImage;
+		self.backgroundImage = [UIImage imageWithColor:[UIColor clearColor]];
+	}
+	_backgroundVisible = backgroundVisible;
 }
 
 @end
