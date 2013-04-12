@@ -9,7 +9,10 @@
 #import "AdvMapView.h"
 #import "AdvMapViewAnnotation.h"
 #import "AdvMapViewFocusAnnotation.h"
+#import "AdvMapViewSearchBar.h"
 #import "MKMapRectForCoordinateRegion.h"
+#import "CLPlacemark+Fields.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define MIN_RELEVANT_DISTANCE_TO_FOCUS_METERS 2000
 
@@ -38,9 +41,16 @@ typedef enum {
 @property (retain, nonatomic) IBOutlet MKMapView *mapView;
 @property (retain, nonatomic) IBOutlet AdvMapViewPagingView *pagingView;
 @property (retain, nonatomic) IBOutlet UIButton *userLocationToggleButton;
+@property (retain, nonatomic) IBOutlet UIView *searchView;
+@property (retain, nonatomic) IBOutlet UITableView *searchTableView;
+@property (retain, nonatomic) IBOutlet AdvMapViewSearchBar *searchBar;
+
 @property (assign, nonatomic) AdvMapViewUserLocationState userLocationState;
 @property (retain, nonatomic) NSMutableArray *items;
 @property (retain, nonatomic) AdvMapViewFocusAnnotation *focusAnnotation;
+
+@property (retain, nonatomic) NSString *searchText;
+@property (retain, nonatomic) NSArray *searchResults;
 
 @property (retain, nonatomic) id<AdvMapViewItem> selectedItem;
 
@@ -70,7 +80,9 @@ typedef enum {
 - (void)_init {
 	self.userLocationState = AdvMapViewUserLocationStateOn;
 	self.items = [NSMutableArray array];
+	self.searchResults = [NSArray array];
 	[self setupMapViewGestures];
+	[self registerForKeyboardNotifications];
 }
 
 #pragma mark Memory Management
@@ -79,7 +91,11 @@ typedef enum {
 	[_mapView release];
 	[_pagingView release];
 	[_items release];
+	[_searchResults release];
 	[_userLocationToggleButton release];
+	[_searchTableView release];
+	[_searchView release];
+	[_searchBar release];
 	[super dealloc];
 }
 
@@ -367,6 +383,26 @@ typedef enum {
 	}
 }
 
+#pragma mark Keyboard Notifications
+- (void)registerForKeyboardNotifications {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillBeHidden:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+	
+	CGRect searchViewFrame = self.searchView.frame;
+	searchViewFrame.size.height -= kbSize.height;
+	
+	self.searchView.frame = searchViewFrame;
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification {
+	self.searchView.frame = self.frame;
+}
+
 #pragma mark Internal: Actions
 
 - (IBAction)userLocationToggle:(id)sender {
@@ -470,22 +506,48 @@ typedef enum {
 #pragma mark Internal: Search Bar Delegate
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-	self.userLocationToggleButton.hidden = searchText.length > 0;
-	
-	if (searchText.length == 0) {
-		[self removeFocusAnnotation];
+}
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+	[self setSearchResultsViewState:YES];
+	self.userLocationToggleButton.hidden = YES;
+}
+
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+	// this is a hack, the cancel button disables itself, so this resets it to enabled
+	for(id subview in [searchBar subviews])
+	{
+		if ([subview isKindOfClass:[UIButton class]]) {
+			dispatch_async(dispatch_get_main_queue(), ^(void){
+				[subview setEnabled:YES];
+			});
+		}
 	}
 }
 
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	self.searchBar.text = self.searchText;
+	[self setSearchResultsViewState:NO];
+	[self endEditing:YES];
+}
+
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+	
+	self.searchText = searchBar.text;
 	
 	[self endEditing:YES];
 	if (searchBar.text.length > 0) {
 		self.userLocationState = AdvMapViewUserLocationStateOff;
 		
+		// TODO: Make an activity view spin
+		
 		CLGeocoder *geocoder = [[[CLGeocoder alloc] init] autorelease];
 		[geocoder geocodeAddressString:searchBar.text completionHandler:^(NSArray *placemarks, NSError *error) {
+			
+			// TODO: Stop the activity view spinning
+			
 			if (error) {
+				NSLog(@"%@", error);
 				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error retrieving location results. Please try again later, thank you!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				[alertView show];
 				[alertView release];
@@ -499,23 +561,85 @@ typedef enum {
 				return;
 			}
 			
-			// reset the paging view to zero
-			[self.pagingView scrollToIndex:0 animated:NO];
-			
-			[self removeAllItems];
-			
-			CLPlacemark *placemark = [placemarks objectAtIndex:0];
-			self.focusCoordinate = placemark.location.coordinate;
-			
-			// add an annotation to the map for the search
-			self.focusAnnotation = [[[AdvMapViewFocusAnnotation alloc] initWithPlacemark:placemark] autorelease];
-			[self.mapView addAnnotation:self.focusAnnotation];
-			
-			// display the annotation view for the focus point
-			[self.mapView selectAnnotation:self.focusAnnotation animated:YES];
+			// update the search results
+			self.searchResults = placemarks;
+			[self.searchTableView reloadData];
 		}];
 	}
 }
+
+#pragma mark Table View Data Source (Search Results)
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return self.searchResults.count + 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell;
+	
+	if (indexPath.row == 0) {
+		static NSString *cellIdentifier = @"currentloc";
+		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+			cell.textLabel.textColor = [UIColor colorWithRed:0 green:136.0/255.0 blue:247.0/255.0 alpha:1];
+		}
+		cell.textLabel.text = @"Current Location";
+	} else {
+		static NSString *cellIdentifier = @"row";
+		cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+		if (cell == nil) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier] autorelease];
+		}
+		CLPlacemark *placemark = self.searchResults[indexPath.row - 1];
+		cell.textLabel.text = placemark.title;
+		cell.detailTextLabel.text = placemark.subtitle;
+	}
+	
+	return cell;
+}
+
+#pragma mark Table View Delegate (Search Results)
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	[self endEditing:YES];
+	
+	// reset the paging view to zero
+	[self.pagingView scrollToIndex:0 animated:NO];
+	
+	// remove any existing items as we're about to change focus
+	[self removeAllItems];
+	
+	if (indexPath.row == 0) {
+		self.searchText = @"";
+		self.searchBar.text = @"";
+		self.userLocationState = AdvMapViewUserLocationStateOn;
+		self.searchResults = [NSArray array];
+		[self.searchTableView reloadData];
+	} else {
+		CLPlacemark *placemark = self.searchResults[indexPath.row-1];
+		
+		// update focus coord
+		self.focusCoordinate = placemark.location.coordinate;
+		
+		// add an annotation to the map for the search
+		self.focusAnnotation = [[[AdvMapViewFocusAnnotation alloc] initWithPlacemark:placemark] autorelease];
+		[self.mapView addAnnotation:self.focusAnnotation];
+		
+		// display the annotation view for the focus point
+		[self.mapView selectAnnotation:self.focusAnnotation animated:YES];
+	}
+	
+	[self setSearchResultsViewState:NO];
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (void)setSearchResultsViewState:(BOOL)visible {
+	self.searchView.hidden = !visible;
+	[self.searchBar setShowsCancelButton:visible animated:YES];
+	self.userLocationToggleButton.hidden = self.searchBar.text.length != 0;
+}
+
 
 #pragma mark Internal: AdvMapViewPagingView Delegate
 

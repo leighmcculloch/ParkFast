@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2004D8DC1702F07D004DBB87 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2004D8DB1702F07D004DBB87 /* QuartzCore.framework */; };
 		2007F70616E31C9300DDB298 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2007F70516E31C9300DDB298 /* libsqlite3.dylib */; };
 		20099D7A16B14137008F6C28 /* AdvMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 20099D7116B14137008F6C28 /* AdvMapView.m */; };
 		20099D7B16B14137008F6C28 /* AdvMapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20099D7216B14137008F6C28 /* AdvMapView.xib */; };
@@ -34,6 +35,7 @@
 		20099DC116B27AFB008F6C28 /* location-arrow-tracking.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */; };
 		20099DC216B27AFB008F6C28 /* location-arrow-tracking@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */; };
 		201B696116F2977800A5A404 /* findparking.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = 201B696016F2977800A5A404 /* findparking.sqlite3 */; };
+		201E95061717BAAD0033E434 /* CLPlacemark+Fields.m in Sources */ = {isa = PBXBuildFile; fileRef = 201E95051717BAAD0033E434 /* CLPlacemark+Fields.m */; };
 		207E755016F30A9C0003E316 /* sqlite3_latlondistkm.c in Sources */ = {isa = PBXBuildFile; fileRef = 207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */; };
 		20E5106F16B140F3009E19E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5106E16B140F3009E19E7 /* UIKit.framework */; };
 		20E5107116B140F3009E19E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20E5107016B140F3009E19E7 /* Foundation.framework */; };
@@ -49,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2004D8DB1702F07D004DBB87 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2007F70516E31C9300DDB298 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		20099D7016B14137008F6C28 /* AdvMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvMapView.h; sourceTree = "<group>"; };
 		20099D7116B14137008F6C28 /* AdvMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvMapView.m; sourceTree = "<group>"; };
@@ -86,10 +89,12 @@
 		20099DBF16B27AFB008F6C28 /* location-arrow-tracking.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow-tracking.png"; sourceTree = "<group>"; };
 		20099DC016B27AFB008F6C28 /* location-arrow-tracking@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "location-arrow-tracking@2x.png"; sourceTree = "<group>"; };
 		201B696016F2977800A5A404 /* findparking.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = findparking.sqlite3; sourceTree = "<group>"; };
+		201E95041717BAAD0033E434 /* CLPlacemark+Fields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLPlacemark+Fields.h"; sourceTree = "<group>"; };
+		201E95051717BAAD0033E434 /* CLPlacemark+Fields.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CLPlacemark+Fields.m"; sourceTree = "<group>"; };
 		207E754D16F30A8E0003E316 /* sqlite3_latlondistkm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite3_latlondistkm.h; sourceTree = "<group>"; };
 		207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3_latlondistkm.c; sourceTree = "<group>"; };
 		207E755116F543350003E316 /* MKMapRectForCoordinateRegion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MKMapRectForCoordinateRegion.h; sourceTree = "<group>"; };
-		20E5106A16B140F3009E19E7 /* FindParking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindParking.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20E5106A16B140F3009E19E7 /* Parking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E5106E16B140F3009E19E7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		20E5107016B140F3009E19E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		20E5107216B140F3009E19E7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -112,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2004D8DC1702F07D004DBB87 /* QuartzCore.framework in Frameworks */,
 				2007F70616E31C9300DDB298 /* libsqlite3.dylib in Frameworks */,
 				20099D8F16B1F443008F6C28 /* CoreLocation.framework in Frameworks */,
 				20099D8516B14309008F6C28 /* MapKit.framework in Frameworks */,
@@ -156,6 +162,8 @@
 				207E754D16F30A8E0003E316 /* sqlite3_latlondistkm.h */,
 				207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */,
 				207E755116F543350003E316 /* MKMapRectForCoordinateRegion.h */,
+				201E95041717BAAD0033E434 /* CLPlacemark+Fields.h */,
+				201E95051717BAAD0033E434 /* CLPlacemark+Fields.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -199,7 +207,7 @@
 		20E5106B16B140F3009E19E7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				20E5106A16B140F3009E19E7 /* FindParking.app */,
+				20E5106A16B140F3009E19E7 /* Parking.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -207,6 +215,7 @@
 		20E5106D16B140F3009E19E7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2004D8DB1702F07D004DBB87 /* QuartzCore.framework */,
 				2007F70516E31C9300DDB298 /* libsqlite3.dylib */,
 				20099D8E16B1F443008F6C28 /* CoreLocation.framework */,
 				20099D8416B14309008F6C28 /* MapKit.framework */,
@@ -253,9 +262,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		20E5106916B140F3009E19E7 /* FindParking */ = {
+		20E5106916B140F3009E19E7 /* Parking */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 20E5109116B140F3009E19E7 /* Build configuration list for PBXNativeTarget "FindParking" */;
+			buildConfigurationList = 20E5109116B140F3009E19E7 /* Build configuration list for PBXNativeTarget "Parking" */;
 			buildPhases = (
 				20E5106616B140F3009E19E7 /* Sources */,
 				20E5106716B140F3009E19E7 /* Frameworks */,
@@ -265,9 +274,9 @@
 			);
 			dependencies = (
 			);
-			name = FindParking;
+			name = Parking;
 			productName = FindParking;
-			productReference = 20E5106A16B140F3009E19E7 /* FindParking.app */;
+			productReference = 20E5106A16B140F3009E19E7 /* Parking.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -292,7 +301,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				20E5106916B140F3009E19E7 /* FindParking */,
+				20E5106916B140F3009E19E7 /* Parking */,
 			);
 		};
 /* End PBXProject section */
@@ -345,6 +354,7 @@
 				20099D9B16B20F9F008F6C28 /* FPCarPark.m in Sources */,
 				20099DBE16B266FB008F6C28 /* AdvMapViewFocusAnnotation.m in Sources */,
 				207E755016F30A9C0003E316 /* sqlite3_latlondistkm.c in Sources */,
+				201E95061717BAAD0033E434 /* CLPlacemark+Fields.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,7 +464,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		20E5109116B140F3009E19E7 /* Build configuration list for PBXNativeTarget "FindParking" */ = {
+		20E5109116B140F3009E19E7 /* Build configuration list for PBXNativeTarget "Parking" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				20E5109216B140F3009E19E7 /* Debug */,

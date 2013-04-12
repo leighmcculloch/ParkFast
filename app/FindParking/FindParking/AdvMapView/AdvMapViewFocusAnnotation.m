@@ -7,6 +7,7 @@
 //
 
 #import "AdvMapViewFocusAnnotation.h"
+#import "CLPlacemark+Fields.h"
 
 @interface AdvMapViewFocusAnnotation ()
 
@@ -34,57 +35,11 @@
 }
 
 - (NSString*)title {
-	if (self.placemark.name) {
-		return self.placemark.name;
-	}
-	
-	NSString *addressLine1 = [self addressLine1];
-	if (addressLine1) {
-		return addressLine1;
-	}
-	
-	return [self addressLine2];
+	return self.placemark.title;
 }
 
 - (NSString*)subtitle {
-	if (self.placemark.name) {
-		return [self address];
-	}
-	
-	NSString *addressLine1 = [self addressLine1];
-	if (addressLine1) {
-		return [self addressLine2];
-	}
-	
-	return nil;
-}
-
-- (NSString*)address {
-	NSMutableString *address = [NSMutableString string];
-	NSString *addressLine1 = [self addressLine1];
-	if (addressLine1) {
-		[address appendFormat:@"%@, ", addressLine1];
-	}
-	[address appendString:[self addressLine2]];
-	return [NSString stringWithString:address];
-}
-
-- (NSString*)addressLine1 {
-	NSMutableString *address = [NSMutableString string];
-	if (self.placemark.subThoroughfare) {
-		[address appendFormat:@"%@ ", self.placemark.subThoroughfare];
-	}
-	if (self.placemark.thoroughfare) {
-		[address appendString:self.placemark.thoroughfare];
-	}
-	if (address.length == 0) {
-		return nil;
-	}
-	return [NSString stringWithString:address];
-}
-
-- (NSString*)addressLine2 {
-	return self.placemark.locality;
+	return self.placemark.subtitle;
 }
 
 @end

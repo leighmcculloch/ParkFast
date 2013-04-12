@@ -20,7 +20,7 @@
 
 @end
 
-@interface AdvMapView : UIView<MKMapViewDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, AdvMapViewPagingViewDelegate>
+@interface AdvMapView : UIView<MKMapViewDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, AdvMapViewPagingViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (retain, nonatomic) id<AdvMapViewDelegate> delegate;
 @property (assign, nonatomic) CLLocationCoordinate2D focusCoordinate;
