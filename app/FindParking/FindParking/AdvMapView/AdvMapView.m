@@ -536,7 +536,7 @@ typedef enum {
 				}
 
 				if ([placemarks count] == 0) {
-					UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"No results" message:@"No results could be found for the location you entered." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"No results" message:@"No results could be found for the destination you entered." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 					[alertView show];
 					[alertView release];
 					return;
