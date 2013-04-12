@@ -44,6 +44,7 @@ typedef enum {
 @property (retain, nonatomic) IBOutlet UIView *searchView;
 @property (retain, nonatomic) IBOutlet UITableView *searchTableView;
 @property (retain, nonatomic) IBOutlet AdvMapViewSearchBar *searchBar;
+@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *searchActivityIndicator;
 
 @property (assign, nonatomic) AdvMapViewUserLocationState userLocationState;
 @property (retain, nonatomic) NSMutableArray *items;
@@ -96,6 +97,7 @@ typedef enum {
 	[_searchTableView release];
 	[_searchView release];
 	[_searchBar release];
+	[_searchActivityIndicator release];
 	[super dealloc];
 }
 
@@ -505,7 +507,50 @@ typedef enum {
 
 #pragma mark Internal: Search Bar Delegate
 
+- (void)searchFor:(NSString*)searchText inlineSearch:(BOOL)inlineSearch {
+	if (!inlineSearch) {
+		self.searchResults = [NSArray array];
+		[self.searchTableView reloadData];
+	}
+	
+	if (searchText.length > 0) {
+		self.userLocationState = AdvMapViewUserLocationStateOff;
+		
+		if (self.searchResults.count == 0) {
+			[self.searchActivityIndicator startAnimating];
+		}
+		
+		CLGeocoder *geocoder = [[[CLGeocoder alloc] init] autorelease];
+		[geocoder geocodeAddressString:searchText inRegion:self.region completionHandler:^(NSArray *placemarks, NSError *error) {
+			
+			[self.searchActivityIndicator stopAnimating];
+
+			if (!inlineSearch) {
+				if (error) {
+					NSLog(@"%@", error);
+					UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error retrieving location results. Please try again later, thank you!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					[alertView show];
+					[alertView release];
+					return;
+				}
+
+				if ([placemarks count] == 0) {
+					UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"No results" message:@"No results could be found for the location you entered." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+					[alertView show];
+					[alertView release];
+					return;
+				}
+			}
+
+			// update the search results
+			self.searchResults = placemarks;
+			[self.searchTableView reloadData];
+		}];
+	}
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+	[self searchFor:searchBar.text inlineSearch:YES];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -526,46 +571,18 @@ typedef enum {
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	self.searchBar.text = self.searchText;
+	if (![self.searchBar.text isEqualToString:self.searchText]) {
+		self.searchBar.text = self.searchText;
+		self.searchResults = [NSArray array];
+		[self.searchTableView reloadData];
+	}
 	[self setSearchResultsViewState:NO];
 	[self endEditing:YES];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	
-	self.searchText = searchBar.text;
-	
 	[self endEditing:YES];
-	if (searchBar.text.length > 0) {
-		self.userLocationState = AdvMapViewUserLocationStateOff;
-		
-		// TODO: Make an activity view spin
-		
-		CLGeocoder *geocoder = [[[CLGeocoder alloc] init] autorelease];
-		[geocoder geocodeAddressString:searchBar.text completionHandler:^(NSArray *placemarks, NSError *error) {
-			
-			// TODO: Stop the activity view spinning
-			
-			if (error) {
-				NSLog(@"%@", error);
-				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error retrieving location results. Please try again later, thank you!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[alertView show];
-				[alertView release];
-				return;
-			}
-			
-			if ([placemarks count] == 0) {
-				UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"No results" message:@"No results could be found for the location you entered." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[alertView show];
-				[alertView release];
-				return;
-			}
-			
-			// update the search results
-			self.searchResults = placemarks;
-			[self.searchTableView reloadData];
-		}];
-	}
+	[self searchFor:searchBar.text inlineSearch:NO];
 }
 
 #pragma mark Table View Data Source (Search Results)
@@ -583,6 +600,7 @@ typedef enum {
 		if (cell == nil) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
 			cell.textLabel.textColor = [UIColor colorWithRed:0 green:136.0/255.0 blue:247.0/255.0 alpha:1];
+			cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"info-bar-bg.png"]] autorelease];
 		}
 		cell.textLabel.text = @"Current Location";
 	} else {
@@ -617,6 +635,8 @@ typedef enum {
 		self.searchResults = [NSArray array];
 		[self.searchTableView reloadData];
 	} else {
+		self.searchText = self.searchBar.text;
+		
 		CLPlacemark *placemark = self.searchResults[indexPath.row-1];
 		
 		// update focus coord

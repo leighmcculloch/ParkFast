@@ -13,6 +13,7 @@
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBMKMapView</string>
 			<string>IBProxyObject</string>
+			<string>IBUIActivityIndicatorView</string>
 			<string>IBUIButton</string>
 			<string>IBUIScrollView</string>
 			<string>IBUISearchBar</string>
@@ -78,7 +79,7 @@
 								<string key="NSFrame">{{0, 56}, {320, 404}}</string>
 								<reference key="NSSuperview" ref="383244797"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="490423559"/>
+								<reference key="NSNextKeyView" ref="145382393"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="297785792">
 									<int key="NSColorSpace">3</int>
@@ -87,12 +88,23 @@
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<bool key="IBUIAlwaysBounceVertical">YES</bool>
-								<int key="IBUISeparatorStyle">1</int>
 								<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
 								<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
 								<float key="IBUIRowHeight">44</float>
 								<float key="IBUISectionHeaderHeight">22</float>
 								<float key="IBUISectionFooterHeight">22</float>
+							</object>
+							<object class="IBUIActivityIndicatorView" id="145382393">
+								<reference key="NSNextResponder" ref="383244797"/>
+								<int key="NSvFlags">-2147483360</int>
+								<string key="NSFrame">{{150, 112}, {20, 20}}</string>
+								<reference key="NSSuperview" ref="383244797"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="490423559"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<int key="IBUIStyle">2</int>
 							</object>
 						</array>
 						<string key="NSFrameSize">{320, 460}</string>
@@ -233,6 +245,14 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">searchActivityIndicator</string>
+						<reference key="source" ref="47719816"/>
+						<reference key="destination" ref="145382393"/>
+					</object>
+					<int key="connectionID">180</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="912450832"/>
 						<reference key="destination" ref="47719816"/>
@@ -338,12 +358,18 @@
 						<reference key="object" ref="383244797"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="219791255"/>
+							<reference ref="145382393"/>
 						</array>
 						<reference key="parent" ref="47719816"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">162</int>
 						<reference key="object" ref="219791255"/>
+						<reference key="parent" ref="383244797"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">178</int>
+						<reference key="object" ref="145382393"/>
 						<reference key="parent" ref="383244797"/>
 					</object>
 				</array>
@@ -368,12 +394,13 @@
 				<boolean value="NO" key="154.showNotes"/>
 				<string key="162.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="171.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="178.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">177</int>
+			<int key="maxID">180</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -394,6 +421,7 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="mapView">MKMapView</string>
 						<string key="pagingView">AdvMapViewPagingView</string>
+						<string key="searchActivityIndicator">UIActivityIndicatorView</string>
 						<string key="searchBar">AdvMapViewSearchBar</string>
 						<string key="searchTableView">UITableView</string>
 						<string key="searchView">UIView</string>
@@ -407,6 +435,10 @@
 						<object class="IBToOneOutletInfo" key="pagingView">
 							<string key="name">pagingView</string>
 							<string key="candidateClassName">AdvMapViewPagingView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="searchActivityIndicator">
+							<string key="name">searchActivityIndicator</string>
+							<string key="candidateClassName">UIActivityIndicatorView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="searchBar">
 							<string key="name">searchBar</string>

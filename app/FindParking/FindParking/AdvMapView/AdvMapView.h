@@ -23,6 +23,7 @@
 @interface AdvMapView : UIView<MKMapViewDelegate, UISearchBarDelegate, UIGestureRecognizerDelegate, AdvMapViewPagingViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (retain, nonatomic) id<AdvMapViewDelegate> delegate;
+@property (retain, nonatomic) CLRegion* region;
 @property (assign, nonatomic) CLLocationCoordinate2D focusCoordinate;
 @property (retain, nonatomic) UIImage* imagePin;
 @property (readonly, nonatomic) CLLocationCoordinate2D centerCoordinate;

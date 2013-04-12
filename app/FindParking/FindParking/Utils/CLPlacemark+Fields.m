@@ -12,10 +12,12 @@
 
 
 - (NSString*)title {
-	if (self.name) {
+	if (self.areasOfInterest.count > 0) {
+		return self.areasOfInterest[0];
+	} else if (self.name) {
 		return self.name;
 	}
-	
+
 	NSString *addressLine1 = [self addressLine1];
 	if (addressLine1) {
 		return addressLine1;
@@ -25,7 +27,7 @@
 }
 
 - (NSString*)subtitle {
-	if (self.name) {
+	if (self.name || self.areasOfInterest.count > 0) {
 		return [self address];
 	}
 	
@@ -62,7 +64,17 @@
 }
 
 - (NSString*)addressLine2 {
-	return [NSString stringWithFormat:@"%@, %@", self.locality, self.administrativeArea];
+	NSMutableString *str = [NSMutableString string];
+	if (self.locality) {
+		[str appendFormat:@"%@, ", self.locality];
+	}
+	if (self.administrativeArea && ![self.administrativeArea isEqualToString:self.locality]) {
+		[str appendFormat:@"%@, ", self.administrativeArea];
+	}
+	if (self.country) {
+		[str appendFormat:@"%@, ", self.country];
+	}
+	return [str stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
 }
 
 @end

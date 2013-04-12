@@ -29,9 +29,15 @@
 	// setup the request utility
 	self.request = [[[HttpRequest alloc] init]autorelease];
 	
+	// create a region for Australia, and we'll limit searches to it
+	CLLocationCoordinate2D australiaCentre = CLLocationCoordinate2DMake(-24.25, 133.416667);
+	CLLocationDistance australiaRadius = 4100000/2; // max width 4,100km
+	CLRegion *region = [[CLRegion alloc] initCircularRegionWithCenter:australiaCentre radius:australiaRadius identifier:@"Australia"];
+	
 	// setup the adv map view
 	self.advMapView = [AdvMapView viewFromNib];
 	self.advMapView.delegate = self;
+	self.advMapView.region = region;
 	self.advMapView.imagePin = [UIImage imageNamed:@"pin-parking"];
 	self.advMapView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 	[self.view addSubview:self.advMapView];
