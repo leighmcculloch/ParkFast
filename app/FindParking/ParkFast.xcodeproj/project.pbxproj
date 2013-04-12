@@ -94,14 +94,14 @@
 		207E754D16F30A8E0003E316 /* sqlite3_latlondistkm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite3_latlondistkm.h; sourceTree = "<group>"; };
 		207E754F16F30A9C0003E316 /* sqlite3_latlondistkm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3_latlondistkm.c; sourceTree = "<group>"; };
 		207E755116F543350003E316 /* MKMapRectForCoordinateRegion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MKMapRectForCoordinateRegion.h; sourceTree = "<group>"; };
-		20E5106A16B140F3009E19E7 /* Parking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parking.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		20E5106A16B140F3009E19E7 /* Park Fast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Park Fast.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20E5106E16B140F3009E19E7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		20E5107016B140F3009E19E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		20E5107216B140F3009E19E7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		20E5107616B140F3009E19E7 /* FindParking-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FindParking-Info.plist"; sourceTree = "<group>"; };
+		20E5107616B140F3009E19E7 /* ParkFast-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ParkFast-Info.plist"; sourceTree = "<group>"; };
 		20E5107816B140F3009E19E7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		20E5107A16B140F3009E19E7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		20E5107C16B140F3009E19E7 /* FindParking-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FindParking-Prefix.pch"; sourceTree = "<group>"; };
+		20E5107C16B140F3009E19E7 /* ParkFast-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ParkFast-Prefix.pch"; sourceTree = "<group>"; };
 		20E5107D16B140F3009E19E7 /* FPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FPAppDelegate.h; sourceTree = "<group>"; };
 		20E5107E16B140F3009E19E7 /* FPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FPAppDelegate.m; sourceTree = "<group>"; };
 		20E5108016B140F3009E19E7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -198,7 +198,7 @@
 		20E5105F16B140F3009E19E7 = {
 			isa = PBXGroup;
 			children = (
-				20E5107416B140F3009E19E7 /* FindParking */,
+				20E5107416B140F3009E19E7 /* ParkFast */,
 				20E5106D16B140F3009E19E7 /* Frameworks */,
 				20E5106B16B140F3009E19E7 /* Products */,
 			);
@@ -207,7 +207,7 @@
 		20E5106B16B140F3009E19E7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				20E5106A16B140F3009E19E7 /* Parking.app */,
+				20E5106A16B140F3009E19E7 /* Park Fast.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -226,7 +226,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		20E5107416B140F3009E19E7 /* FindParking */ = {
+		20E5107416B140F3009E19E7 /* ParkFast */ = {
 			isa = PBXGroup;
 			children = (
 				20099D6F16B14137008F6C28 /* AdvMapView */,
@@ -242,16 +242,17 @@
 				201B695F16F2977800A5A404 /* DB */,
 				20E5107516B140F3009E19E7 /* Supporting Files */,
 			);
+			name = ParkFast;
 			path = FindParking;
 			sourceTree = "<group>";
 		};
 		20E5107516B140F3009E19E7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				20E5107616B140F3009E19E7 /* FindParking-Info.plist */,
+				20E5107616B140F3009E19E7 /* ParkFast-Info.plist */,
 				20E5107716B140F3009E19E7 /* InfoPlist.strings */,
 				20E5107A16B140F3009E19E7 /* main.m */,
-				20E5107C16B140F3009E19E7 /* FindParking-Prefix.pch */,
+				20E5107C16B140F3009E19E7 /* ParkFast-Prefix.pch */,
 				20E5108016B140F3009E19E7 /* Default.png */,
 				20E5108216B140F3009E19E7 /* Default@2x.png */,
 				20E5108416B140F3009E19E7 /* Default-568h@2x.png */,
@@ -262,9 +263,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		20E5106916B140F3009E19E7 /* Parking */ = {
+		20E5106916B140F3009E19E7 /* Park Fast */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 20E5109116B140F3009E19E7 /* Build configuration list for PBXNativeTarget "Parking" */;
+			buildConfigurationList = 20E5109116B140F3009E19E7 /* Build configuration list for PBXNativeTarget "Park Fast" */;
 			buildPhases = (
 				20E5106616B140F3009E19E7 /* Sources */,
 				20E5106716B140F3009E19E7 /* Frameworks */,
@@ -274,9 +275,9 @@
 			);
 			dependencies = (
 			);
-			name = Parking;
+			name = "Park Fast";
 			productName = FindParking;
-			productReference = 20E5106A16B140F3009E19E7 /* Parking.app */;
+			productReference = 20E5106A16B140F3009E19E7 /* Park Fast.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -289,7 +290,7 @@
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Leigh McCulloch";
 			};
-			buildConfigurationList = 20E5106416B140F3009E19E7 /* Build configuration list for PBXProject "FindParking" */;
+			buildConfigurationList = 20E5106416B140F3009E19E7 /* Build configuration list for PBXProject "ParkFast" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -301,7 +302,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				20E5106916B140F3009E19E7 /* Parking */,
+				20E5106916B140F3009E19E7 /* Park Fast */,
 			);
 		};
 /* End PBXProject section */
@@ -434,8 +435,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "FindParking/FindParking-Prefix.pch";
-				INFOPLIST_FILE = "FindParking/FindParking-Info.plist";
+				GCC_PREFIX_HEADER = "FindParking/ParkFast-Prefix.pch";
+				INFOPLIST_FILE = "FindParking/ParkFast-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -445,8 +446,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "FindParking/FindParking-Prefix.pch";
-				INFOPLIST_FILE = "FindParking/FindParking-Info.plist";
+				GCC_PREFIX_HEADER = "FindParking/ParkFast-Prefix.pch";
+				INFOPLIST_FILE = "FindParking/ParkFast-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -455,7 +456,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		20E5106416B140F3009E19E7 /* Build configuration list for PBXProject "FindParking" */ = {
+		20E5106416B140F3009E19E7 /* Build configuration list for PBXProject "ParkFast" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				20E5108F16B140F3009E19E7 /* Debug */,
@@ -464,7 +465,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		20E5109116B140F3009E19E7 /* Build configuration list for PBXNativeTarget "Parking" */ = {
+		20E5109116B140F3009E19E7 /* Build configuration list for PBXNativeTarget "Park Fast" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				20E5109216B140F3009E19E7 /* Debug */,
