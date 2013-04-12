@@ -45,7 +45,6 @@ typedef enum {
 @property (retain, nonatomic) IBOutlet UITableView *searchTableView;
 @property (retain, nonatomic) IBOutlet AdvMapViewSearchBar *searchBar;
 @property (assign, nonatomic) BOOL searchBarShouldBeginEditing;
-@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *searchActivityIndicator;
 
 @property (assign, nonatomic) AdvMapViewUserLocationState userLocationState;
 @property (retain, nonatomic) NSMutableArray *items;
@@ -106,7 +105,6 @@ typedef enum {
 	[_searchTableView release];
 	[_searchView release];
 	[_searchBar release];
-	[_searchActivityIndicator release];
 	[super dealloc];
 }
 
@@ -519,14 +517,18 @@ typedef enum {
 - (void)searchFor:(NSString*)searchText inlineSearch:(BOOL)inlineSearch {
 	
 	if (searchText.length > 0) {
-		if (self.searchResults.count == 0) {
-			[self.searchActivityIndicator startAnimating];
+		
+		BOOL useActivityIndicator = self.searchResults.count == 0;
+		if (useActivityIndicator) {
+			[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 		}
 		
 		CLGeocoder *geocoder = [[[CLGeocoder alloc] init] autorelease];
 		[geocoder geocodeAddressString:searchText inRegion:self.region completionHandler:^(NSArray *placemarks, NSError *error) {
 			
-			[self.searchActivityIndicator stopAnimating];
+			if (useActivityIndicator) {
+				[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+			}
 
 			if (!inlineSearch) {
 				if (error) {
