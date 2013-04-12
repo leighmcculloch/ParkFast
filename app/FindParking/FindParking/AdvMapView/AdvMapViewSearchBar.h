@@ -11,5 +11,8 @@
 @interface AdvMapViewSearchBar : UISearchBar
 
 @property (assign, nonatomic) BOOL backgroundVisible;
+@property (retain, nonatomic) UIColor* placeholderTextColor;
+
+- (void)resetPlaceholderTextColor;
 
 @end

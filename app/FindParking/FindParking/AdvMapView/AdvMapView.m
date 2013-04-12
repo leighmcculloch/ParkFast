@@ -681,8 +681,10 @@ typedef enum {
 	self.searchBar.backgroundVisible = visible;
 	if (visible) {
 		self.searchBar.placeholder = @"Destination";
+		[self.searchBar resetPlaceholderTextColor];
 	} else {
 		self.searchBar.placeholder = @"Current Location";
+		self.searchBar.placeholderTextColor = [UIColor colorWithRed:0 green:136.0/255.0 blue:247.0/255.0 alpha:1];
 	}
 	[self.searchBar setShowsCancelButton:visible animated:YES];
 	self.userLocationToggleButton.hidden = self.searchBar.text.length != 0;

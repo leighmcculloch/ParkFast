@@ -11,6 +11,7 @@
 
 @interface AdvMapViewSearchBar ()
 
+@property (retain, nonatomic) UIColor *originalPlaceholderTextColor;
 @property (retain, nonatomic) UIImage *originalBackgroundImage;
 
 @end
@@ -31,6 +32,7 @@
 
 - (void)_init {
 	self.backgroundVisible = NO;
+	self.originalPlaceholderTextColor = self.placeholderTextColor;
 }
 
 - (void)setBackgroundVisible:(BOOL)backgroundVisible {
@@ -41,6 +43,20 @@
 		self.backgroundImage = [UIImage imageWithColor:[UIColor clearColor]];
 	}
 	_backgroundVisible = backgroundVisible;
+}
+
+- (void)setPlaceholderTextColor:(UIColor *)placeholderTextColor {
+	UITextField *searchField = [self valueForKey:@"_searchField"];
+	[searchField setValue:placeholderTextColor forKeyPath:@"_placeholderLabel.textColor"];
+}
+
+- (UIColor*)placeholderTextColor {
+	UITextField *searchField = [self valueForKey:@"_searchField"];
+	return (UIColor*)[searchField valueForKeyPath:@"_placeholderLabel.textColor"];
+}
+
+- (void)resetPlaceholderTextColor {
+	self.placeholderTextColor = self.originalPlaceholderTextColor;
 }
 
 @end
