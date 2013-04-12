@@ -482,7 +482,7 @@ typedef enum {
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-	BOOL updateRegion = NO;
+	/*BOOL updateRegion = NO;
 	MKCoordinateRegion region = mapView.region;
 	if (region.span.latitudeDelta > MAX_ZOOM_OUT) {
 		region.span.latitudeDelta = MAX_ZOOM_OUT;
@@ -495,7 +495,7 @@ typedef enum {
 	
 	if (updateRegion) {
 		[mapView setRegion:region animated:YES];
-	}
+	}*/
 	
 	if ([self.delegate respondsToSelector:@selector(advMapView:regionDidChangeAnimated:)]) {
 		[self.delegate advMapView:self regionDidChangeAnimated:animated];
