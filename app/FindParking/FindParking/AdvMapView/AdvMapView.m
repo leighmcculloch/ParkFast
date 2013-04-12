@@ -514,8 +514,6 @@ typedef enum {
 	}
 	
 	if (searchText.length > 0) {
-		self.userLocationState = AdvMapViewUserLocationStateOff;
-		
 		if (self.searchResults.count == 0) {
 			[self.searchActivityIndicator startAnimating];
 		}
@@ -582,7 +580,6 @@ typedef enum {
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
 	[self endEditing:YES];
-	[self searchFor:searchBar.text inlineSearch:NO];
 }
 
 #pragma mark Table View Data Source (Search Results)
@@ -636,6 +633,8 @@ typedef enum {
 		[self.searchTableView reloadData];
 	} else {
 		self.searchText = self.searchBar.text;
+		
+		self.userLocationState = AdvMapViewUserLocationStateOff;
 		
 		CLPlacemark *placemark = self.searchResults[indexPath.row-1];
 		
