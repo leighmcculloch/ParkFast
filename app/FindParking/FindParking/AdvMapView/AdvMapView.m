@@ -44,6 +44,7 @@ typedef enum {
 @property (retain, nonatomic) IBOutlet UIView *searchView;
 @property (retain, nonatomic) IBOutlet UITableView *searchTableView;
 @property (retain, nonatomic) IBOutlet AdvMapViewSearchBar *searchBar;
+@property (assign, nonatomic) BOOL searchBarShouldBeginEditing;
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *searchActivityIndicator;
 
 @property (assign, nonatomic) AdvMapViewUserLocationState userLocationState;
@@ -548,7 +549,25 @@ typedef enum {
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+	if(![searchBar isFirstResponder]) {
+        self.searchBarShouldBeginEditing = NO;
+		self.searchText = @"";
+		[self removeAllItems];
+		self.focusCoordinate = self.mapView.userLocation.coordinate;
+		[self moveToFocusCoordinate:NO];
+		self.userLocationToggleButton.hidden = NO;
+		self.searchResults = [NSArray array];
+		[self.searchTableView reloadData];
+		return;
+    }
+	
 	[self searchFor:searchBar.text inlineSearch:YES];
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
+	BOOL shouldBeginEditing = self.searchBarShouldBeginEditing;
+	self.searchBarShouldBeginEditing = YES;
+	return shouldBeginEditing;
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
