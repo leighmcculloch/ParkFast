@@ -12,7 +12,6 @@
 @interface AdvMapViewSearchBar ()
 
 @property (retain, nonatomic) UIColor *originalPlaceholderTextColor;
-@property (retain, nonatomic) UIImage *originalBackgroundImage;
 
 @end
 
@@ -31,15 +30,14 @@
 }
 
 - (void)_init {
-	self.backgroundVisible = NO;
+	_backgroundVisible = YES;
 	self.originalPlaceholderTextColor = self.placeholderTextColor;
 }
 
 - (void)setBackgroundVisible:(BOOL)backgroundVisible {
 	if (backgroundVisible) {
-		self.backgroundImage = self.originalBackgroundImage;
+		self.backgroundImage = nil;
 	} else {
-		self.originalBackgroundImage = self.backgroundImage;
 		self.backgroundImage = [UIImage imageWithColor:[UIColor clearColor]];
 	}
 	_backgroundVisible = backgroundVisible;

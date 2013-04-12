@@ -64,7 +64,9 @@ typedef enum {
 
 + (AdvMapView*)viewFromNib {
 	NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"AdvMapView" owner:nil options:nil];
-	return (AdvMapView*)[nibContents objectAtIndex:0];
+	AdvMapView* view = (AdvMapView*)[nibContents objectAtIndex:0];
+	[view nibLoaded];
+	return view;
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -76,6 +78,11 @@ typedef enum {
 }
 
 - (void)awakeFromNib {
+	// we load everything in 'nibLoaded' instead, to ensure the entire nib has been loaded
+	// which ensures sub views are loaded from the nib too
+}
+
+- (void)nibLoaded {
 	[self _init];
 }
 
@@ -83,8 +90,8 @@ typedef enum {
 	self.userLocationState = AdvMapViewUserLocationStateOn;
 	self.items = [NSMutableArray array];
 	self.searchResults = [NSArray array];
-	[self setupMapViewGestures];
 	[self setSearchResultsViewState:NO];
+	[self setupMapViewGestures];
 	[self registerForKeyboardNotifications];
 }
 
