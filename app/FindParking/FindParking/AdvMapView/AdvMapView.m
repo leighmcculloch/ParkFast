@@ -84,6 +84,7 @@ typedef enum {
 	self.items = [NSMutableArray array];
 	self.searchResults = [NSArray array];
 	[self setupMapViewGestures];
+	[self setSearchResultsViewState:NO];
 	[self registerForKeyboardNotifications];
 }
 
@@ -689,7 +690,6 @@ typedef enum {
 	[self.searchBar setShowsCancelButton:visible animated:YES];
 	self.userLocationToggleButton.hidden = self.searchBar.text.length != 0;
 }
-
 
 #pragma mark Internal: AdvMapViewPagingView Delegate
 
