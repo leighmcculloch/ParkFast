@@ -9,7 +9,7 @@
 #ifndef sqlite_latlondistkm_h
 #define sqlite_latlondistkm_h
 
-#import "/usr/include/sqlite3.h"
+#import <sqlite3.h>
 
 void sqlite3_latlondistkm(sqlite3_context *context, int argc, sqlite3_value **argv);
 
