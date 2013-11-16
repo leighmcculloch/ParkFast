@@ -13,8 +13,8 @@
 @interface AdvMapViewFocusAnnotation : NSObject<MKAnnotation>
 
 @property (readonly, nonatomic) CLLocationCoordinate2D coordinate;
-@property (readonly, nonatomic) NSString *title;
-@property (readonly, nonatomic) NSString *subtitle;
+@property (readonly, nonatomic, copy) NSString *title;
+@property (readonly, nonatomic, copy) NSString *subtitle;
 
 -(id)initWithPlacemark:(CLPlacemark*)placemark;
 
