@@ -4,7 +4,7 @@ An iOS application targeted for users who need to find parking fast. The app dis
 
 License
 ========
-The source code is licensed to under the license in LICENSE.txt.
+The source code is licensed to under GPLv3. See LICENSE.txt.
 
 Artwork License
 ========
