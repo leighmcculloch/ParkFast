@@ -2,7 +2,7 @@ ParkFast
 ========
 An iOS application targeted for users who need to find parking fast. The app displays nearby carparks and brief information including the minimum and maximum cost. The app displays this information based off an local SQLite database and does not download the data from the web. This application is not deployed to the Apple App Store as it does not contain parking data.
 
-License
+Source Code License
 ========
 The source code is licensed to under GPLv3. See LICENSE.txt.
 
